@@ -161,7 +161,7 @@ class AccountController extends AbstractController
      */
     public function myAccount(PDIRepository $repoPDI, CategorieRepository $repoCat, EtoileRepository $repoEtoile, RatingRepository $repoRat, RatingEtoileRepository $repoRatetoile)
     {
-        $user = $this->getUser();
+        $user = $this->getUser(); 
         $pdis = $repoPDI->findByCollaborateur($user);
         $categorie = $repoCat->findAll();
         $etoile = $repoEtoile->findByCollaborateur($user);

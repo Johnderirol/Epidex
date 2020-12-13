@@ -38,7 +38,7 @@ class RegistrationType extends ApplicationType
                 'empty_data' => 'http://cdn.onlinewebfonts.com/svg/img_24787.png',
             ])
             ->add('description', TextareaType::class, $this->getConfiguration("Présentation", "Présentez-vous en quelques mots"))
-            ->add('hash', HiddenType::class, ['empty_data' => 'password'])
+            ->add('hash', HiddenType::class, ['empty_data' => 'password@LM155'])
             ->add('statut', ChoiceType::class, [
             'choices'  => [
                 'Employé' => 'Employé',
