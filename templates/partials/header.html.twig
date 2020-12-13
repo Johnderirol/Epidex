@@ -6,9 +6,47 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+
+        {% if is_granted('ROLE_ADMIN') %}
         <li class="nav-item active">
-            <a class="nav-link" href="{{path('account_index')}}">Accueil</a>
+            <a class="nav-link" href="{{path('dashboard')}}">Accueil</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('admin_collab')}}">Effectif</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('organisation')}}">Organisation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('admin_eval')}}">Evaluation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('admin_pdi')}}">PDI</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('admin_etoile')}}">Etoile des Compétences</a>
+        </li>
+        {% elseif is_granted('ROLE_MANAGER') %}
+        <li class="nav-item active">
+            <a class="nav-link" href="{{path('manager_dashboard')}}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_collab')}}">Effectif</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_eval')}}">Evaluation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_pdi')}}">PDI</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_etoile')}}">Etoile des Compétences</a>
+        </li>
+        {% else %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{{path('account_index')}}">Accueil</a>
+        </li>
+        {% endif %}
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
