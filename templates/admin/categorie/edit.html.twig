@@ -1,0 +1,14 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Editeur des Categories de compétence{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Edit Categorie</h1>
+
+    {{ include('admin/categorie/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('categorie_index') }}">Retour à la liste</a>
+
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Etoile{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Edit Etoile</h1>
+
+    {{ include('etoile/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('etoile_index') }}">back to list</a>
+
+</div>
+{% endblock %}

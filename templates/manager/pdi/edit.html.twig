@@ -1,0 +1,14 @@
+{% extends 'manager/base.html.twig' %}
+
+{% block title %}Edit PDI{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Modifier le PDI</h1>
+
+    {{ include('manager/pdi/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <a href="{{ path('manager_pdi') }}">Retour à la liste</a>
+
+</div>
+{% endblock %}

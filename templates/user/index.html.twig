@@ -1,0 +1,329 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Page de {{user.fullName}}!{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center">
+                <img src="{{user.picture}}" class="avatar mb-3" alt="Avatar de {{user.fullName}}">
+                <br>
+            </div>
+            <div class="col-md-9">
+                <h1>{{user.fullName}}</h1>
+                    <div class="mt-3">
+                        <a href="{{path('edit_register_collab',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Modifier le profil</a>
+                        <a href="{{path('account_password')}}" class="btn btn-success mb-2 btn-sm"> Modifier le mot de passe</a>
+                        <a href="{{path('evaluation_new',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Auto-Evaluation Compétences</a>
+                        {% if user.missionCible.title is defined %}
+                        <a href="{{path('etoile_new',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Auto-Evaluation Evolution</a>
+                        {% else %}
+                        {% endif %}
+                    </div>         
+                <hr> 
+                <h4>Rayon : 
+                {% if user.rayon is empty %}
+                {% else %}
+                <a>{{user.rayon.title}}</a></h4>
+                {% endif %}
+                <h4>Mission : 
+                {% if user.mission is empty %}
+                {% else %}
+                <a>{{user.mission.title}}</a></h4>
+                {% endif %}
+            </div>
+        </div>
+        <blockquote class="blockquote">
+                <h6>{{user.description | raw}}</h6>
+        </blockquote>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Compétences</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">PDI</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Evolution Pro</a>
+        </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!-- Tab Compétences -->
+            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                <div class="row">
+                    {% for evaluation in user.evaluations %}
+                    <div class="col-md-6">
+                        <div class="panel panel-default">        
+                            <div class="panel-heading">
+                                <h3>Evaluation </h3>
+                                <p>Date : {{ evaluation.createdAt ? evaluation.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                                <p>Auteur : {{ evaluation.auteur.fullName }}</p> 
+                            </div>             
+                            <div class="panel-body">   
+                                <div class="table table-striped table-hover">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="table_{{evaluation.id}}">
+                                        <thead>
+                                        <tr class="active">
+                                            <th class="th-sm">Compétences</th>  
+                                            <th class="th-sm">Categorie</th>
+                                            <th class="th-sm">Notes</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rating in evaluation.ratings %}
+                                        
+                                        <tr class="gradeX">
+                                            <td class="center hidden-phone">{{rating.competences.title}}</td>
+                                            <td class="center hidden-phone">{{rating.competences.category.title}}</td>
+                                            <td class="center hidden-phone">{{rating.note}}</td>
+
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="panel panel-default">
+                            {% for cat in categories %}
+                                <h4><center><span class="label label-success"> Compétences {{cat.title}}</span></center></h4>
+                                <div class="panel-body">
+                                    <canvas id="{{cat.slug}}" class="chartjs"></canvas>
+                                </div>
+                            {% endfor %}
+                                <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab PDI -->
+            <div class="tab-pane" id="tabs-2" role="tabpanel">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Plan de Développement Individuel</div>
+                    <div class="panel-body">
+                        {% for pdi in user.pdis %}
+                        <div class="row">
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-8">
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                    <tr class="success">
+                                        <th>Date de création</th>
+                                        <td>{{ pdi.createdAt ? pdi.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>SituationApprenante</th>
+                                        <td>{{ pdi.situationApprenante }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Progres</th>
+                                        <td>{{ pdi.progres }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ContributeursRoles</th>
+                                        <td>{{ pdi.contributeursRoles }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>EndDate</th>
+                                        <td>{{ pdi.endDate ? pdi.endDate|date('Y-m-d') : '' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Etoile -->
+            <div class="tab-pane" id="tabs-3" role="tabpanel">
+                <div class="row">
+                {% for etoile in etoiles %}
+                    <div class="col-md-6">
+                        <div class="panel panel-default"> 
+                            <div class="panel-heading">
+                                <h3>Mission Cible : <strong>{{etoile.collaborateur.missionCible.title}}</strong></h3>
+                                <p>Date : {{ etoile.createdAt ? etoile.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                                <p>Auteur : {{ etoile.auteur.fullName }}</p>
+                            </div>             
+                            <div class="panel-body"> 
+                                <div class="table table-hover">
+                                <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="table_id">
+                                    <thead>
+                                        <tr>
+                                            <th>Compétences</th>
+                                            <td>Notes</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for rating in etoile.ratingEtoiles %}
+                                        <tr>
+                                            <th>{{rating.competences.title}}</th>
+                                            <td>{{rating.note}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body text-center mt-3">
+                            <canvas id="etoile" class="chartjs" width="404" height="202" style="display: block; width: 404px; height: 202px;"></canvas>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    
+
+
+{% endblock %} 
+{% block javascripts %}
+{% for cat in categories %}
+<script>
+
+var ctx = document.getElementById('{{cat.slug}}').getContext('2d');
+
+var data = {
+        labels:[
+            {% set compArray = [] %}   
+            {% for rating in ratings %}
+            {% if rating.competences.title not in compArray %}
+                {% if rating.competences.category.slug == cat.slug %}
+                "{{rating.competences.title}}",
+                {% endif %}
+                {% set compArray = compArray|merge([rating.competences.title]) %}
+            {% endif %}
+            {% endfor %}
+            ],
+
+        
+        datasets:[
+        {% for evaluation in user.evaluations %}
+        {
+            label:"Auteur : {{evaluation.auteur.fullName}}",
+            data:
+            [
+            {% for rating in evaluation.ratings %}
+                {% if rating.competences.category.slug == cat.slug %}
+                "{{rating.note}}",
+                {% endif %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{evaluation.auteur.color.code}}, 0.2)",
+            borderColor:"{{evaluation.auteur.color.name}}",
+            pointBackgroundColor:"{{evaluation.auteur.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{evaluation.auteur.color.name}}",
+            
+        },
+        {% endfor %}
+        ]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endfor %}
+<script>
+{% for evaluation in user.evaluations %}
+$(document).ready( function () {
+    $('#table_{{evaluation.id}}').DataTable();
+} );
+{% endfor %}
+</script>
+
+<script>
+var ctx = document.getElementById('etoile').getContext('2d');
+
+var data = {
+        labels:[
+            {% set compArray = [] %}   
+            {% for rating in ratingEtoiles %}
+            {% if rating.competences.title not in compArray %}
+                "{{rating.competences.title}}",
+                {% set compArray = compArray|merge([rating.competences.title]) %}
+            {% endif %}
+            {% endfor %}
+            ],
+
+        datasets:[
+        {% for etoile in etoiles %}    
+            {
+            label:"{{etoile.auteur.fullName}}",
+            data:
+            [
+            {% for rating in etoile.ratingEtoiles %}
+                "{{rating.note}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{etoile.auteur.color.code}}, 0.2)",
+            borderColor:"{{etoile.auteur.color.name}}",
+            pointBackgroundColor:"{{etoile.auteur.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{etoile.auteur.color.name}}",  
+        },
+        {% endfor %}
+        ]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+</script>
+{%  endblock %}

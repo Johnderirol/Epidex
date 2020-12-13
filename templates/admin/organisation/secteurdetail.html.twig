@@ -1,0 +1,48 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello CompetenceController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    
+    
+
+    <h1> {{secteur.title}}</h1>
+    
+    <hr>
+    
+    <p class="h2"> Description : </p>
+    <p></p>
+    
+    <hr>
+    {% set r = secteur.responsable %}
+    <p> Responsable : </p><p><strong>{{r.fullName}}</strong></p>
+       
+    <hr>
+    
+    <p> Rayons : </p>
+    <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
+    <tbody>
+    {% for rayon in secteur.rayons %}
+
+        <tr class="gradeX">
+            <td class="center hidden-phone">{{rayon.title}}</td>
+            <td class="center hidden-phone">{{rayon.numero}} </td>
+        </tr>
+    
+    {% endfor %}
+    </tbody>
+     
+    </table>
+    
+    
+
+    <a href="{{path('edit_secteur', {'slug':secteur.slug})}}" class="btn btn-primary" title="Modifier"><i class="fas fa-edit"></i></a></a>
+
+</div>
+{% endblock %}

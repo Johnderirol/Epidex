@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+{% block body %}
+
+    <div class="container">
+     <div class="jumbotrom mt-3">
+        <div class="jumbotron">
+          <h1 class="display-3">Bienvenue!</h1>
+          <p class="lead">Application dédiée à la création de la cartographie des compétence des magasins Leroy Merlin.</p>
+          <hr class="my-4">
+          <p>Application réservée aux collaborateurs de Leroy Merlin</p>
+          <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{{path ('account_login')}}" role="button">Se connecter</a>
+          </p>
+        </div>
+      </div>  
+    </div>
+
+{% endblock body %}
+
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>

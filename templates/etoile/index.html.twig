@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etoile index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Etoile des competences</h1>
+        <div class="col-md-4">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Etoile des Compétences</h3>
+                </div>
+                <div class="panel-body">
+                    <p><a href="{{ path('mission_cible_index') }}"> 1. Définition des Evolutions </a></p>
+                    <p><a href="{{ path('compEtoile_index') }}"> 2. Référentiel des Compétences </a></p>
+                    <p><a href="{{ path('admin_collab') }}"> 3. Evaluation </a></p>
+                </div>
+            </div>
+        </div>
+    <table class="table">
+        <thead>
+            <tr class="active">
+                <th>Collaborateur</th>
+                <th>Evaluateur</th>
+                <th>Date de Création</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for etoile in etoiles %}
+            <tr>
+                <td>{{ etoile.collaborateur.fullName }}</td>
+                <td>{{ etoile.auteur.fullName }}</td>
+                <td>{{ etoile.createdAt ? etoile.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('etoile_show',{'id': etoile.id})}}"class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('etoile_edit',{'id': etoile.id})}}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('etoile_delete',{'id': etoile.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

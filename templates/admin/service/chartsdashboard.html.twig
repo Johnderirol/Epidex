@@ -1,0 +1,206 @@
+{% block javascripts %}
+<script>
+
+var ctx = document.getElementById('fondamentale').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for evaluation in radarFond %}
+            "{{evaluation.competence.title}}",
+        {% endfor %}
+        ],
+
+        datasets:[{
+            label:"Fondamentale",
+            data:
+            [
+            {% for evaluation in radarFond %}
+            "{{evaluation.avgNotes}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(255, 99, 132, 0.2)",
+            borderColor:"rgb(255, 99, 132)",
+            pointBackgroundColor:"rgb(255, 99, 132)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(255, 99, 132)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+<script>
+
+var ctx = document.getElementById('metier').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for evaluation in radarMetier %}
+            "{{evaluation.competence.title}}",
+        {% endfor %}
+        ],
+
+        datasets:[{
+            label:"Métier",
+            data:
+            [
+            {% for evaluation in radarMetier %}
+            "{{evaluation.avgNotes}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(0, 153, 255, 0.2)",
+            borderColor:"rgb(0, 153, 255)",
+            pointBackgroundColor:"rgb(0, 153, 255)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(0, 153, 255)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+<script>
+
+var ctx = document.getElementById('animation').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for evaluation in radarAnimation %}
+            "{{evaluation.competence.title}}",
+        {% endfor %}
+        ],
+
+        datasets:[{
+            label:"Animation",
+            data:
+            [
+            {% for evaluation in radarAnimation %}
+            "{{evaluation.avgNotes}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(51, 204, 51, 0.2)",
+            borderColor:"rgb(51, 204, 51)",
+            pointBackgroundColor:"rgb(51, 204, 51)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(51, 204, 51)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+<script>
+
+var ctx = document.getElementById('management').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for evaluation in radarManagement %}
+            "{{evaluation.competence.title}}",
+        {% endfor %}
+        ],
+
+        datasets:[{
+            label:"Management",
+            data:
+            [
+            {% for evaluation in radarManagement %}
+            "{{evaluation.avgNotes}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(204, 204, 51, 0.2)",
+            borderColor:"rgb(204, 204, 51)",
+            pointBackgroundColor:"rgb(204, 204, 51)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(204, 204, 51)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{%  endblock %}

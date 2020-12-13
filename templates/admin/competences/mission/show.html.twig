@@ -1,0 +1,116 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello EffectifController!{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+
+    <h1 class="mt-5">Liste des Collaborateurs : <strong>{{mission.title}}</strong></h1>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="adv-table">
+          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-hover" id="hidden-table-info">
+            <thead>
+              <tr class="success">
+                <th class="th-sm">Matricule</th>  
+                <th class="th-sm">Nom</th>
+                <th class="th-sm">Prénom</th>  
+              </tr>
+            </thead>
+            <tbody>
+            {% for collaborateurs in mission.collaborateur %}
+            <tr>
+                <td class="center hidden-phone"><a href="{{ path('user_show',{'id':collaborateurs.id})}}">{{collaborateurs.matricule}}</a></td>
+                <td class="center hidden-phone">{{collaborateurs.nom}}</td>
+                <td class="center hidden-phone">{{collaborateurs.prenom}}</td>
+            </tr>
+            
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="adv-table">
+          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-hover" id="hidden-table-info">
+            <thead>
+              <tr class="success">
+                <th class="th-sm">Compétences</th> 
+                <th class="th-sm">Description</th> 
+              </tr>
+            </thead>
+            <tbody>
+            {% for skill in mission.skills %}
+            <tr>
+                  <td class="center hidden-phone">{{skill.title}}</td>
+                  <td class="center hidden-phone">{{skill.description}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel panel-default">
+        <canvas id="evalMission" class="chartjs" width="404" height="202" style="display: block; width: 404px; height: 202px;"></canvas>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+var ctx = document.getElementById('evalMission').getContext('2d');
+
+var data = {
+        labels:[
+            {% for rating in evalMission %}
+                "{{rating.title}}",
+            {% endfor %}
+            ],
+
+        datasets:[{
+            label:"{{mission.title}}",
+            data:
+            [
+            {% for rating in evalMission %}
+                "{{rating.note}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(255, 99, 132, 0.2)",
+            borderColor:"rgb(255, 99, 132)",
+            pointBackgroundColor:"rgb(255, 99, 132)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(255, 99, 132)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 1,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endblock %}
+

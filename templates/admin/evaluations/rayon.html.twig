@@ -1,0 +1,155 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Rayon : 
+    {% for rayon in rayons %}
+        {{rayon.title}}
+    {% endfor %}
+    </h1>
+    <br>
+        <div class="panel panel-default col-md-6">
+            <div class="panel-heading">Cartographie générale du rayon</div>
+            <div class="panel-body">
+            {% for cat in categories %}
+                <div class="panel-body">
+                    <canvas id="{{cat.slug}}" class="chartjs"></canvas>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div class="panel panel-default col-md-6">
+            <div class="panel-heading">Cartographie détaillée du rayon</div>
+            <div class="panel-body">
+             {% for cat in categories %}
+                <div class="panel-body">
+                    <canvas id="{{cat.slug}}.collab" class="chartjs"></canvas>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+</div>
+{% endblock body %}
+{% block javascripts %}
+{% for cat in categories %}
+<script>
+
+var ctx = document.getElementById('{{cat.slug}}').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for skill in skills %}
+            {% if skill.competence.category.slug == cat.slug %}
+            "{{skill.competence.title}}",
+            {% endif %}
+        {% endfor %}
+        ],
+
+        datasets:[{
+            label:"{{cat.title}}",
+            data:
+            [
+            {% for skill in skills %}
+                {% if skill.competence.category.slug == cat.slug %}
+                "{{skill.avgNotes}}",
+                {% endif %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(255, 99, 132, 0.2)",
+            borderColor:"rgb(255, 99, 132)",
+            pointBackgroundColor:"rgb(255, 99, 132)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(255, 99, 132)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endfor %}
+{% for cat in categories %}
+<script>
+
+var ctx = document.getElementById('{{cat.slug}}.collab').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for skill in skills %}
+            {% if skill.competence.category.slug == cat.slug %}
+            "{{skill.competence.title}}",
+            {% endif %}
+        {% endfor %}
+        ],
+
+        datasets:[
+        {% for collaborateur in collaborateurs %}
+        {
+            label:
+            "{{collaborateur.fullName}}",
+            data:
+            [
+            {% for rating in ratings %}
+                {% if rating.competences.category.slug == cat.slug %}
+                {% if rating.collaborateur == collaborateur %}
+                "{{rating.note}}",
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{collaborateur.color.code}}, 0.2)",
+            borderColor:"{{collaborateur.color.name}}",
+            pointBackgroundColor:"{{collaborateur.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{collaborateur.color.name}}",
+            
+        },
+        {% endfor %}
+        ]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endfor %}
+{%  endblock %}

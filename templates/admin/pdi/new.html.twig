@@ -1,0 +1,117 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New PDI{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<div class="container">
+    <div class="jumbotron">
+    <h2>Plan de Développement Individuel</h2>
+    <br>
+
+    {{ form_start(form) }}
+    
+    {{ form_widget(form) }}
+   
+    <button class="btn btn-primary btn-md">{{ button_label|default('Enregistrer') }}</button>
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('admin_pdi') }}">back to list</a>
+    </div>
+</div>
+
+{% endblock %} 
+
+{% block _collab_pdi_pdis_widget %}
+    <p><strong>Ajouter des actions</stong></p>
+    
+    {{ form_widget(form)}}
+    
+    <input type="hidden" id="widgets-counter" value="0">
+     
+    <div class="form-group">
+        <button type="button" id="add-action" class="btn btn-primary">Ajouter une action</button>
+    </div>
+    
+{%  endblock %}
+ 
+
+{% block _collab_pdi_pdis_entry_row %}
+     {{ form_widget(form)}}
+{% endblock %}
+
+
+    
+{% block _collab_pdi_pdis_entry_widget %}
+    <div class="form-group" id="block_{{id}}">
+        <div class="row">
+            <div class="col-xs-11">
+                <div class="row">
+                    <div class="col-xs-4">
+                        {{ form_widget(form.situationApprenante)}}
+                    </div>
+                    <div class="col-xs-4">
+                        {{ form_widget(form.progres)}}
+                    </div>
+                    <div class="col-xs-2">
+                        {{ form_widget(form.contributeursRoles)}}
+                    </div>
+                    <div class="col-xs-2">
+                        {{ form_widget(form.endDate)}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-1">
+                <button type="button" data-action="delete" data-target="#block_{{id}}"  class="btn btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+     
+{% block javascripts %}
+    
+<script>
+ $('#add-action').click(function(){
+     //Je récupère le numéro des futurs champs à créer
+     const index = +$('#widgets-counter').val();
+
+     console.log(index);
+     
+     //Je récupère le prototype des entrées
+     const tmpl = $('#collab_pdi_pdis').data('prototype').replace(/__name__/g, index);
+     
+     //J'injecte le code dans la DIV
+     $('#collab_pdi_pdis').append(tmpl);
+     $('#widgets-counter').val(index + 1);
+     
+     //Je gère le bouton "supprimer"
+     handleDeleteButtons();
+     
+     
+ });
+
+    function handleDeleteButtons(){
+    $('button[data-action="delete"]').click(function(){
+            const target = this.dataset.target;
+            $(target).remove();  
+    });
+    
+    }
+    function updateCounter(){
+        const count = +$('#collab_pdi_pdis div.form-group').length;
+        
+        $('#widgets-counter').val(count);
+    }
+    
+     //On appel la fonction Update
+     updateCounter();
+    
+     //On appel la fonction "supprimer"    
+     handleDeleteButtons();
+    
+</script>
+
+    
+{%  endblock %}

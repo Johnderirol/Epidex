@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Evaluation{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<div class="form-horizontal">
+  <fieldset>
+        <div class="container">
+            <br>
+            <h1>Evaluation : <strong>{{collaborateur.fullName}}</strong></h1>
+            <br>
+
+
+        {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+
+        <button type="submit" class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+
+        {{ form_end(form) }}
+
+        <a href="{{ path('evaluation_index') }}">back to list</a>
+
+        </div>
+  </fieldset>
+</div>
+{% endblock %}
+
+{% block _evaluation_ratings_widget %}
+    <p><strong>Ajouter les compétences</stong></p>
+    
+    {{ form_widget(form)}}
+    
+    <input type="hidden" id="widgets-counter" value="0">
+     
+    <div class="form-group">
+        <button type="button" id="add-competence" class="btn btn-primary">Ajouter une Compétence</button>
+    </div>
+{%  endblock %}
+ 
+
+ {% block _evaluation_ratings_entry_row %}
+     {{ form_widget(form)}}
+{% endblock %}  
+
+
+    
+{% block _evaluation_ratings_entry_widget %}
+    <div class="form-group" id="block_{{id}}">
+        <div class="row">
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-6">
+                        {{ form_widget(form.competences)}}
+                    </div>
+                    <div class="col-xs-5">
+                        {{ form_widget(form.note)}}
+                    </div>
+                    <div class="col-xs-1" alt="Photo">
+                    <i class="fas fa fa-comment-dots fa-2x" title="{% for datas in form.competences.vars.choices %}{% if datas.data.id == form.competences.vars.value %}{{datas.data.description}}{% endif %}{% endfor %}"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" data-action="delete" data-target="#block_{{id}}"  class="btn btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+
+    
+{%  endblock %}
+     
+{% block javascripts %}
+    
+<script>
+ $('#add-competence').click(function(){
+     //Je récupère le numéro des futurs champs à créer
+     const index = +$('#widgets-counter').val();
+
+     console.log(index);
+     
+     //Je récupère le prototype des entrées
+     const tmpl = $('#evaluation_ratings').data('prototype').replace(/__name__/g, index);
+     
+     //J'injecte le code dans la DIV
+     $('#evaluation_ratings').append(tmpl);
+     $('#widgets-counter').val(index + 1);
+     
+     //Je gère le bouton "supprimer"
+     handleDeleteButtons();
+     
+     
+ });
+
+    function handleDeleteButtons(){
+    $('button[data-action="delete"]').click(function(){
+            const target = this.dataset.target;
+            $(target).remove();  
+    });
+    
+    }
+    function updateCounter(){
+        const count = +$('#evaluation_ratings div.form-group').length;
+        
+        $('#widgets-counter').val(count);
+    }
+    
+     //On appel la fonction Update
+     updateCounter();
+    
+     //On appel la fonction "supprimer"    
+     handleDeleteButtons();
+    
+</script>
+
+    
+{%  endblock %}

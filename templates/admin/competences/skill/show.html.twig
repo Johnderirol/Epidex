@@ -1,0 +1,45 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Skill{% endblock %}
+
+{% block body %}
+<br>
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-6">
+            <h1>Compétence</h1>  
+            <br>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <td><strong>{{ skill.title }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ skill.description }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>    
+        <div class="col-6">
+            <h3> Missions associées : </h3>
+            <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
+            <tbody>
+                    
+                    {% for mission in skill.missions %}
+                    <tr class="gradeX">
+                    <td class="center hidden-phone">{{ mission.title }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <a href="{{ path('skill_index') }}" class="btn btn-primary mr-2 mb-2">Retour à la liste</a>
+
+    <a href="{{ path('skill_edit', {'id': skill.id}) }}" class="btn btn-primary mr-2 mb-2">Modifier</a>
+
+</div>
+{% endblock %}

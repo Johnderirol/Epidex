@@ -1,0 +1,80 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    {% for mission in missions %}
+    <h1>Mission : {{mission.title}} </h1>
+    {% endfor %}
+
+    <br>
+    <div class="panel-heading">Comparatif des collaborateur sur cette étoile</div>
+        <div class="panel-body">
+            <div class="panel-body">
+                <canvas id="etoile" class="chartjs"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{% for mission in missions %}
+<script>
+
+var ctx = document.getElementById('etoile').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for comp in comps %}
+               "{{comp.title}}",
+        {% endfor %}
+        ],
+
+        datasets:[
+        {% for collaborateur in collaborateurs %}
+        {
+            label:
+            "{{collaborateur.fullName}}",
+            data:
+            [
+            {% for rating in ratings %}
+                {% if rating.collaborateur == collaborateur %}
+                "{{rating.note}}",
+                {% endif %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{collaborateur.color.code}}, 0.2)",
+            borderColor:"{{collaborateur.color.name}}",
+            pointBackgroundColor:"{{collaborateur.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{collaborateur.color.name}}",
+            
+        },
+        {% endfor %}
+        ]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endfor %}
+{%  endblock %}

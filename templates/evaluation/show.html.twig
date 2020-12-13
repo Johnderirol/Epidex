@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evaluation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Evaluation de {{evaluation.collaborateur.fullName}}</h1>
+
+    <p>Date : {{ evaluation.createdAt ? evaluation.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+    <p>Evaluateur : {{ evaluation.auteur }}
+
+    <div class="table table-hover">
+      <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="table_id">
+        <thead>
+          <tr class="table-success">
+            <th class="th-sm">Compétences</th>  
+            <th class="th-sm">Categorie</th>
+            <th class="th-sm">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for rating in evaluation.ratings %}
+         <tr class="gradeX">
+            <td class="center hidden-phone">{{rating.competences.title}}</td>
+            <td class="center hidden-phone">{{rating.competences.categorie}}</td>
+            <td class="center hidden-phone">{{rating.note}}</td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+      
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body text-center mt-3">
+            <canvas id="{{evaluation.id}}" class="chartjs" width="404" height="202" style="display: block; width: 404px; height: 202px;"></canvas>
+        </div>
+        <br>
+    </div>
+
+    
+
+    <a href="{{ path('evaluation_index') }}">back to list</a>
+
+    <a href="{{ path('evaluation_edit', {'id': evaluation.id, 'slug': evaluation.collaborateur.slug})}}">edit</a>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+var ctx = document.getElementById('{{evaluation.id}}').getContext('2d');
+
+var data = {
+        labels:[
+            {% for rating in evaluation.ratings %}
+                "{{rating.competences.title}}",
+            {% endfor %}
+            ],
+
+        datasets:[{
+            label:"{{evaluation.collaborateur.fullName}}",
+            data:
+            [
+            {% for rating in evaluation.ratings %}
+                "{{rating.note}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(255, 99, 132, 0.2)",
+            borderColor:"rgb(255, 99, 132)",
+            pointBackgroundColor:"rgb(255, 99, 132)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(255, 99, 132)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+</script>
+{%  endblock %}

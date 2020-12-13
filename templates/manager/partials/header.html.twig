@@ -1,0 +1,58 @@
+ <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{path('manager_dashboard')}}">CARTOGRAPHIE <span class="text-success">COMPETENCES</span></a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="{{path('manager_dashboard')}}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_collab')}}">Effectif</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_eval')}}">Evaluation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_pdi')}}">PDI</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('manager_etoile')}}">Etoile des Compétences</a>
+          </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">
+              <img src="{{app.user.picture}}" class="avatar avatar-mini" alt="Avatar de {{app.user.fullName}}"> {{app.user.fullName}}
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            <li><a href="{{path('account_index')}}" class="nav-link">Profil</a></li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{path('dashboard')}}" class="nav-link">Administrateur</a></li>
+            <li><a href="{{path('admin_role')}}" class="nav-link">Rôles</a></li>
+            {% elseif is_granted('ROLE_MANAGER') %}
+            <li><a href="#" class="nav-link">Manager</a></li>
+            {% else %}
+            {% endif %}
+            <li><a href="{{path('account_password')}}" class="nav-link">Modifier Mot de Passe</a></li>
+            <li class="divider"></li>
+            <li><a href="{{path('account_logout')}}" class="nav-link">Déconnexion</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+        
+{% for label, messages in app.flashes %}
+    <div class="container">
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{message | raw }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,32 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Rôles des Collaborateurs{% endblock %}
+
+{% block body %}
+<div class="container">
+   <h1 class="my-5">Gestion des Autorisation</h1>
+    <br>
+    <br>
+    {% for role in roles %}
+    <div class="col-md-6">
+    <h3>{{role.title}}</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr class="active">
+                <th>Prénom</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for collaborateur in role.users %}
+            <tr>
+                <th>{{collaborateur.fullName}}</th>
+                <th><a href="{{ path('role_delete',{'collab':collaborateur.id, 'role':role.id })}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a></th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

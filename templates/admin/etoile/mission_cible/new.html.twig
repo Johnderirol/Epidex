@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Nouelle Mission Cible{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Créer une nouvelle Mission Cible</h1>
+
+    {{ include('admin/etoile/mission_cible/_form.html.twig') }}
+
+    <a href="{{ path('mission_cible_index') }}">back to list</a>
+</div>
+{% endblock %}

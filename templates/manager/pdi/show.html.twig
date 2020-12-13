@@ -1,0 +1,39 @@
+{% extends 'manager/base.html.twig' %}
+
+{% block title %}PDI{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>PDI</h1>
+
+    <table class="table table-striped table-hover">
+        <tbody>
+            <tr class="success">
+                <th>CreatedAt</th>
+                <td>{{ pdi.createdAt ? pdi.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>SituationApprenante</th>
+                <td>{{ pdi.situationApprenante }}</td>
+            </tr>
+            <tr>
+                <th>Progres</th>
+                <td>{{ pdi.progres }}</td>
+            </tr>
+            <tr>
+                <th>ContributeursRoles</th>
+                <td>{{ pdi.contributeursRoles }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ pdi.endDate ? pdi.endDate|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('manager_pdi') }}">back to list</a>
+
+    <a href="{{ path('manager_pdi_edit', {'id': pdi.id}) }}">edit</a>
+
+</div>
+{% endblock %}

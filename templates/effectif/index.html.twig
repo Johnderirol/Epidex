@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Effectifs{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+<br>
+    <h1>Effectifs : </h1>
+    <p><a href="{{ path('account_register')}}">Créer Nouveau collaborateur</a></p>
+    <br>
+    <div>
+      <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-hover " id="table_id">
+        <thead>
+          <tr class="success">
+            <th class="th-sm">Matricule</th>  
+            <th class="th-sm">Nom Prénom</th>
+            <th class="th-sm">Mission</th>
+            <th class="th-sm">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for effectif in collaborateurs %}
+         <tr> 
+            <td class="center hidden-phone">{{effectif.matricule}}</td>
+            <td class="center hidden-phone">{{effectif.fullName}}</td>
+            <td class="center hidden-phone"><a href="{{ path('mission',{'id':effectif.mission.id})}}"> {{effectif.mission.title}}</a></td>
+            <td class="center hidden-phone">
+                <a href="{{ path('user_show',{'id':effectif.id})}}">Afficher</a> | 
+                <a href="{{ path('edit_register_collab',{'id':effectif.id})}}">Modifier</a> | 
+                <a href="{{ path('evaluation_new',{'id':effectif.id})}}">Evaluer</a> | 
+                <a href="{{ path('pdi_new',{'id':effectif.id})}}">Faire PDI</a> | 
+                <a href="{{ path('user_delete',{'id':effectif.id})}}" onclick="return confirm('Cela va supprimer le collaborateur')">Supprimer</a> 
+            </td>
+        </tr>
+         
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+</script>
+{%  endblock %}

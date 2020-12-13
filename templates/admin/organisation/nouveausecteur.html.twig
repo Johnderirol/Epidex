@@ -1,0 +1,113 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Nouvelle Compétence{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+
+
+<div class="container">
+    
+    
+    <h1> Nouveau Secteur </h1>
+    
+    <hr>
+    
+    {{form_start(form)}}
+    
+    <div class="form-group">
+    
+    {{form_widget(form)}}
+    
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+    
+    
+    {{form_end(form)}}
+
+</div>
+{% endblock %}
+    
+    
+{% block _secteur_rayons_widget %}
+    <p>Ajouter les rayons du Secteur</p>
+    
+    {{ form_widget(form)}}
+    
+    <input type="hidden" id="widgets-counter" value="0">
+     
+    <div class="form-group">
+        <button type="button" id="add-rayons" class="btn btn-primary">Ajouter un Rayon</button>
+    </div>
+{%  endblock %}
+    
+    
+{% block _secteur_rayons_entry_row %}
+     {{ form_widget(form)}}
+{% endblock %}  
+    
+    
+{% block _secteur_rayons_entry_widget %}
+    <div class="form-group" id="block_{{id}}">
+        <div class="row">
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-8">
+                        {{ form_widget(form.title)}}
+                    </div>
+                    <div class="col-xs-4">
+                        {{ form_widget(form.numero)}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" data-action="delete" data-target="#block_{{id}}"  class="btn btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+
+    
+{%  endblock %}
+     
+{% block javascripts %}
+    
+<script>
+ $('#add-rayons').click(function(){
+     //Je récupère le numéro des futurs champs à créer
+     const index = +$('#widgets-counter').val();
+     
+     //Je récupère le prototype des entrées
+     const tmpl = $('#secteur_rayons').data('prototype').replace(/__name__/g, index);
+     
+     //J'injecte le code dans la DIV
+     $('#secteur_rayons').append(tmpl);
+     $('#widgets-counter').val(index + 1);
+     
+     //Je gère le bouton "supprimer"
+     handleDeleteButtons();
+     
+     
+ });
+
+    function handleDeleteButtons(){
+    $('button[data-action="delete"]').click(function(){
+            const target = this.dataset.target;
+            $(target).remove();  
+    });
+    
+    }
+    function updateCounter(){
+        const count = +$('#secteur_rayons div.form-group').length;
+        
+        $('#widgets-counter').val(count);
+    }
+    
+     //On appel la fonction Update
+     updateCounter();
+    
+     //On appel la fonction "supprimer"    
+     handleDeleteButtons();
+    
+</script>
+    
+{%  endblock %}

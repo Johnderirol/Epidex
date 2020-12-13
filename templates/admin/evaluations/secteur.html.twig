@@ -1,0 +1,157 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Secteur : 
+    {% for secteur in secteurs %}
+        {{secteur.title}}
+    {% endfor %}  
+    </h1>
+    <br>
+        <div class="panel panel-default col-md-6">
+            <div class="panel-heading">Cartographie générale du secteur</div>
+            <div class="panel-body">
+            {% for cat in categories %}
+                <div class="panel-body">
+                    <canvas id="{{cat.slug}}" class="chartjs"></canvas>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div class="panel panel-default col-md-6">
+            <div class="panel-heading">Cartographie détaillée du secteur</div>
+            <div class="panel-body">
+            {% for cat in categories %}
+                <div class="panel-body">
+                    <canvas id="{{cat.slug}}.rayon" class="chartjs"></canvas>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+</div>
+{% endblock body %}
+{% block javascripts %}
+{% for cat in categories %}
+<script>
+
+var ctx = document.getElementById('{{cat.slug}}').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for skill in skillSecteur %}
+            {% if skill.competence.category.slug == cat.slug %}
+            "{{skill.competence.title}}",
+            {% endif %}
+        {% endfor %}
+        ],
+
+        datasets:[{
+            label:"{{cat.title}}",
+            data:
+            [
+            {% for skill in skillSecteur %}
+                {% if skill.competence.category.slug == cat.slug %}
+                "{{skill.avgNotes}}",
+                {% endif %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(255, 99, 132, 0.2)",
+            borderColor:"rgb(255, 99, 132)",
+            pointBackgroundColor:"rgb(255, 99, 132)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(255, 99, 132)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endfor %}
+{% for cat in categories %}
+<script>
+
+var ctx = document.getElementById('{{cat.slug}}.rayon').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for skill in skillSecteur %}
+            {% if skill.competence.category.slug == cat.slug %}
+            "{{skill.competence.title}}",
+            {% endif %}
+        {% endfor %}
+        ],
+
+        datasets:[
+        {% for rayon in rayons %}
+        {
+            label:
+            "{{rayon.title}}",
+            data:
+            [
+            {% for skill in skillRayon %}
+                {% for s in skill %}
+                    {% if s.competence.category.slug == cat.slug %}
+                    {% if s.title == rayon.title %}
+                       "{{s.avgNotes}}",  
+                    {% endif %}       
+                    {% endif %}          
+                {% endfor %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{rayon.color.code}}, 0.2)",
+            borderColor:"{{rayon.color.name}}",
+            pointBackgroundColor:"{{rayon.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{rayon.color.name}}",
+
+        },
+        {% endfor %}
+        ]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endfor %}
+{%  endblock %}
