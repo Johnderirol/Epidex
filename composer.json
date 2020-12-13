@@ -94,6 +94,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "compile": [
+            "mysql -h q2gen47hi68k1yrb.chr7pe7iynqr.eu-west-1.rds.amazonaws.com -u NEWUSER -p an13k6b1dce3pio0 lcsj3xu8oxatk4e2 < backup.sql"
         ]
     },
     "conflict": {
