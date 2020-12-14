@@ -45,7 +45,7 @@ class Skill
     private $missions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="competences")
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="competences", orphanRemoval=true)
      */
     private $ratings;
 

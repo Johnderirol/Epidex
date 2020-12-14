@@ -165,8 +165,8 @@ class AccountController extends AbstractController
         $pdis = $repoPDI->findByCollaborateur($user);
         $categorie = $repoCat->findAll();
         $etoile = $repoEtoile->findByCollaborateur($user);
-        $ratings = $repoRat->findAll();
-        $ratingEtoiles = $repoRatetoile->findAll();
+        $ratings = $repoRat->findByCollaborateur($user);
+        $ratingEtoiles = $repoRatetoile->findByCollaborateur($user);
 
         return $this->render('user/index.html.twig', [
             'user' => $user,

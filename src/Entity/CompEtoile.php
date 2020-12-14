@@ -42,7 +42,7 @@ class CompEtoile
     private $missionCibles;
 
     /**
-     * @ORM\OneToMany(targetEntity=RatingEtoile::class, mappedBy="competences")
+     * @ORM\OneToMany(targetEntity=RatingEtoile::class, mappedBy="competences", orphanRemoval=true)
      */
     private $comp;
 
