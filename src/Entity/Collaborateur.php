@@ -135,7 +135,7 @@ class Collaborateur implements UserInterface
     private $etoiles;
 
     /**
-     * @ORM\ManyToOne(targetEntity=MissionCible::class, inversedBy="collaborateurs", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity=MissionCible::class, inversedBy="collaborateurs")
      */
     private $missionCible;
 
