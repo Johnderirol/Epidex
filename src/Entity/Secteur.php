@@ -35,7 +35,7 @@ class Secteur
     private $title;
 
     /**
-     * @ORM\OneToMany(targetEntity=Rayon::class, mappedBy="secteur",orphanRemoval = true)
+     * @ORM\OneToMany(targetEntity=Rayon::class, mappedBy="secteur", orphanRemoval = true)
      * @Assert\Valid()
      * 
      */

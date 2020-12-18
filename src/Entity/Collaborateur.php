@@ -49,6 +49,7 @@ class Collaborateur implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Mission::class, inversedBy="collaborateur")
+     * @ORM\JoinColumn(nullable=true, name="mission_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $mission;
 
@@ -136,6 +137,7 @@ class Collaborateur implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=MissionCible::class, inversedBy="collaborateurs")
+     * @ORM\JoinColumn(nullable=true, name="mission_cible_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $missionCible;
 

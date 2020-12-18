@@ -33,6 +33,7 @@ class MissionCible
 
     /**
      * @ORM\OneToMany(targetEntity=Collaborateur::class, mappedBy="missionCible")
+     * 
      */
     private $collaborateurs;
 
