@@ -91,7 +91,7 @@ class MissionCibleController extends AbstractController
         $manager->remove($missionCible);
         $manager->flush();
 
-        $this->addFlash( 
+        $this->addFlash(
             'success',
             "La mission a bien été supprimé de la base de donnée !"
         );

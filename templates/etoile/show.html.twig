@@ -1,4 +1,4 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Etoile{% endblock %}
 
@@ -35,9 +35,15 @@
         <br>
     </div>
 
-    <a href="{{ path('etoile_index') }}">back to list</a>
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('admin_etoile_edit', {'id': etoile.id}) }}">Modifier</a>
+    <a href="{{ path('admin_etoile') }}">Retour à la liste</a>
+    {% elseif is_granted('ROLE_MANAGER') %}
+    <a href="{{ path('manager_etoile_edit', {'id': etoile.id}) }}">Modifier</a>
+    <a href="{{ path('manager_etoile') }}">Retour à la liste</a>
+    {% else %}
+    {% endif %}
 
-    <a href="{{ path('etoile_edit', {'id': etoile.id}) }}">edit</a>
 </div>
 {% endblock %}
 

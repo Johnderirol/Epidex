@@ -10,7 +10,13 @@
 
     {{ include('etoile/_form.html.twig') }}
 
-    <a href="{{ path('etoile_index') }}">Retour</a>
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('admin_etoile') }}">Retour à la liste</a>
+    {% elseif is_granted('ROLE_MANAGER') %}
+    <a href="{{ path('manager_etoile') }}">Retour à la liste</a>
+    {% else %}
+    {% endif %}
+    
 </div>
 {% endblock %}
 
@@ -43,4 +49,4 @@
             </div>
         </div>
     </div>
-{%  endblock %}
+{%  endblock %} 

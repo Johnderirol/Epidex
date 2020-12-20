@@ -1,15 +1,15 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
 <div class="container">
-    <h1>Secteur : 
-    {% for secteur in secteurs %}
-        {{secteur.title}}
-    {% endfor %}  
+    <h1>Rayon : 
+    {% for rayon in rayons %}
+        {{rayon.title}}
+    {% endfor %}
     </h1>
     <br>
         <div class="panel panel-default col-md-6">
-            <div class="panel-heading">Cartographie générale du secteur</div>
+            <div class="panel-heading">Cartographie générale du rayon</div>
             <div class="panel-body">
             {% for cat in categories %}
                 <div class="panel-body">
@@ -19,11 +19,11 @@
             </div>
         </div>
         <div class="panel panel-default col-md-6">
-            <div class="panel-heading">Cartographie détaillée du secteur</div>
+            <div class="panel-heading">Cartographie détaillée du rayon</div>
             <div class="panel-body">
-            {% for cat in categories %}
+             {% for cat in categories %}
                 <div class="panel-body">
-                    <canvas id="{{cat.slug}}.rayon" class="chartjs"></canvas>
+                    <canvas id="{{cat.slug}}.collab" class="chartjs"></canvas>
                 </div>
             {% endfor %}
             </div>
@@ -39,7 +39,7 @@ var ctx = document.getElementById('{{cat.slug}}').getContext('2d');
 var data = {
         labels:
         [
-        {% for skill in skillSecteur %}
+        {% for skill in skills %}
             {% if skill.competence.category.slug == cat.slug %}
             "{{skill.competence.title}}",
             {% endif %}
@@ -50,7 +50,7 @@ var data = {
             label:"{{cat.title}}",
             data:
             [
-            {% for skill in skillSecteur %}
+            {% for skill in skills %}
                 {% if skill.competence.category.slug == cat.slug %}
                 "{{skill.avgNotes}}",
                 {% endif %}
@@ -91,12 +91,12 @@ var config =  {
 {% for cat in categories %}
 <script>
 
-var ctx = document.getElementById('{{cat.slug}}.rayon').getContext('2d');
+var ctx = document.getElementById('{{cat.slug}}.collab').getContext('2d');
 
 var data = {
         labels:
         [
-        {% for skill in skillSecteur %}
+        {% for skill in skills %}
             {% if skill.competence.category.slug == cat.slug %}
             "{{skill.competence.title}}",
             {% endif %}
@@ -104,30 +104,28 @@ var data = {
         ],
 
         datasets:[
-        {% for rayon in rayons %}
+        {% for collaborateur in collaborateurs %}
         {
             label:
-            "{{rayon.title}}",
+            "{{collaborateur.fullName}}",
             data:
             [
-            {% for skill in skillRayon %}
-                {% for s in skill %}
-                    {% if s.competence.category.slug == cat.slug %}
-                    {% if s.title == rayon.title %}
-                       "{{s.avgNotes}}",  
-                    {% endif %}       
-                    {% endif %}          
-                {% endfor %}
+            {% for rating in ratings %}
+                {% if rating.competences.category.slug == cat.slug %}
+                {% if rating.collaborateur == collaborateur %}
+                "{{rating.note}}",
+                {% endif %}
+                {% endif %}
             {% endfor %}
             ],
             fill:true,
-            backgroundColor:"rgba({{rayon.color.code}}, 0.2)",
-            borderColor:"{{rayon.color.name}}",
-            pointBackgroundColor:"{{rayon.color.name}}",
+            backgroundColor:"rgba({{collaborateur.color.code}}, 0.2)",
+            borderColor:"{{collaborateur.color.name}}",
+            pointBackgroundColor:"{{collaborateur.color.name}}",
             pointBorderColor:"#fff",
             pointHoverBackgroundColor:"#fff",
-            pointHoverBorderColor:"{{rayon.color.name}}",
-
+            pointHoverBorderColor:"{{collaborateur.color.name}}",
+            
         },
         {% endfor %}
         ]};

@@ -1,28 +1,36 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Edit PDI{% endblock %}
+{% block title %}New PDI{% endblock %}
 
 {% form_theme form _self %}
 
 {% block body %}
 <div class="container">
-    <h1>Modifier les actions</h1>
+    <div class="jumbotron">
+    <h2>Plan de Développement Individuel</h2>
+    <br>
 
-        {{ form_start(form) }}
+    {{ form_start(form) }}
+    
+    {{ form_widget(form) }}
+   
+    <button class="btn btn-primary btn-md">{{ button_label|default('Enregistrer') }}</button>
 
-        {{ form_widget(form) }}
+    {{ form_end(form) }}
 
-        <button class="btn btn-primary btn-md">{{ button_label|default('Modifier') }}</button>
-
-        {{ form_end(form) }}
-
-
-    <a href="{{ path('admin_pdi') }}">Retour à la liste</a>
-
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_pdi') }}">back to list</a>
+        {% elseif is_granted('ROLE_MANAGER') %}
+        <a href="{{ path('manager_pdi') }}">back to list</a>
+        {% else %}
+        {% endif %}
+    
+    </div>
 </div>
-{% endblock %}
 
-{% block _collab_pdi_pdis_widget %}
+{% endblock %} 
+
+{% block _collab_pdi_PDIs_widget %}
     <p><strong>Ajouter des actions</stong></p>
     
     {{ form_widget(form)}}
@@ -36,13 +44,13 @@
 {%  endblock %}
  
 
-{% block _collab_pdi_pdis_entry_row %}
+{% block _collab_pdi_PDIs_entry_row %}
      {{ form_widget(form)}}
-{% endblock %}  
+{% endblock %}
 
 
     
-{% block _collab_pdi_pdis_entry_widget %}
+{% block _collab_pdi_PDIs_entry_widget %}
     <div class="form-group" id="block_{{id}}">
         <div class="row">
             <div class="col-xs-11">
@@ -78,10 +86,10 @@
      console.log(index);
      
      //Je récupère le prototype des entrées
-     const tmpl = $('#collab_pdi_pdis').data('prototype').replace(/__name__/g, index);
+     const tmpl = $('#collab_pdi_PDIs').data('prototype').replace(/__name__/g, index);
      
      //J'injecte le code dans la DIV
-     $('#collab_pdi_pdis').append(tmpl);
+     $('#collab_pdi_PDIs').append(tmpl);
      $('#widgets-counter').val(index + 1);
      
      //Je gère le bouton "supprimer"
@@ -98,7 +106,7 @@
     
     }
     function updateCounter(){
-        const count = +$('#_collab_pdi_pdis div.form-group').length;
+        const count = +$('#collab_pdi_PDIs div.form-group').length;
         
         $('#widgets-counter').val(count);
     }

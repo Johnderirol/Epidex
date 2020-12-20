@@ -1,11 +1,17 @@
-{% extends 'manager/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Etoile index{% endblock %}
 
 {% block body %}
 <div class="container">
     <h1>Etoile des competences</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+    {{ include('admin/service/padeletoile.html.twig') }}
+    {% elseif is_granted('ROLE_MANAGER') %}
     {{ include('manager/service/padeletoile.html.twig') }}
+    {% else %}
+    {% endif %}
+    
     <table class="table">
         <thead>
             <tr class="active">
@@ -16,23 +22,21 @@
             </tr>
         </thead>
         <tbody>
-        {% for e in etoiles %}
-        {% for etoile in e %}
+        {% for etoile in etoiles %}
             <tr>
-                <th><a href="{{ path('user_show',{'id':etoile.collaborateur.id})}}">{{ etoile.collaborateur.fullName }}</a></th>
+                <td><a href="{{ path('user_show',{'id':etoile.collaborateur.id})}}">{{ etoile.collaborateur.fullName }}</a></td>
                 <td>{{ etoile.auteur.fullName }}</td>
                 <td>{{ etoile.createdAt ? etoile.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('manager_etoile_show',{'id': etoile.id})}}"class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('manager_etoile_edit',{'id': etoile.id})}}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
-                    <a href="{{ path('manager_etoile_delete',{'id': etoile.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                    <a href="{{ path('admin_etoile_show',{'id': etoile.id})}}"class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('admin_etoile_edit',{'id': etoile.id})}}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('admin_etoile_delete',{'id': etoile.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         {% else %}
             <tr>
                 <td colspan="3">no records found</td>
             </tr>
-        {% endfor %}
         {% endfor %}
         </tbody>
     </table>

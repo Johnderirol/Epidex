@@ -22,15 +22,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class EvaluationController extends AbstractController
 {
-    /**
-     * @Route("/", name="evaluation_index", methods={"GET"})
-     */
-    public function index(EvaluationRepository $evaluationRepository): Response
-    {
-        return $this->render('evaluation/index.html.twig', [
-            'evaluations' => $evaluationRepository->findAll(),
-        ]);
-    }
 
     /**
      * @Route("/new/{id}", name="evaluation_new")
@@ -39,6 +30,8 @@ class EvaluationController extends AbstractController
     {
         $comp = $repoSkill->findAll();
 
+        //Récupérer l'user
+        $user = $this->getUser()->getRoles();
 
         //Récupérer Collaborateur grâce au Id
         $collaborateur = $repoCollab->findOneById($id);
@@ -88,8 +81,17 @@ class EvaluationController extends AbstractController
                 'success',
                 "L'évaluation est prise en compte !!!"
             );
-                
-            return $this->redirectToRoute('account_index');
+            
+            if ($user[0] == 'ROLE_ADMIN') {
+                return $this->redirectToRoute('admin_eval');
+            }
+            elseif ($user[0] == 'ROLE_MANAGER') {
+                return $this->redirectToRoute('manager_eval');
+            }
+            else {
+                return $this->redirectToRoute('account_index');
+            }
+            
             
         }
 
@@ -118,6 +120,9 @@ class EvaluationController extends AbstractController
      */
     public function edit($slug, Request $request, Evaluation $evaluation,CollaborateurRepository $repoCollab): Response
     {
+        //Récupérer l'user
+        $user = $this->getUser()->getRoles();
+
         $collaborateur = $repoCollab->findOneBySlug($slug);
         $form = $this->createForm(EvaluationType::class, $evaluation);
         $form->handleRequest($request);
@@ -125,7 +130,15 @@ class EvaluationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('evaluation_index');
+            if ($user[0] = 'ROLE_ADMIN') {
+                return $this->redirectToRoute('admin_eval');
+            }
+            elseif ($user[0] = 'ROLE_MANAGER') {
+                return $this->redirectToRoute('manager_eval');
+            }
+            else {
+                return $this->redirectToRoute('account_index');
+            }
         }
 
         return $this->render('evaluation/edit.html.twig', [
@@ -133,6 +146,35 @@ class EvaluationController extends AbstractController
             'collaborateur' => $collaborateur,
             'form' => $form->createView(),
         ]);
+    }
+
+
+    /**
+     * Permet de suppimer une évaluation
+     * @Route("/admin/delete_evaluation/{id}", name="evaluation_delete")
+     * @Route("/manager/delete_evaluation/{id}", name="manager_evaluation_delete")
+     * @param Evaluation $evaluation
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function delete(Evaluation $evaluation, EntityManagerInterface $manager) {
+        $manager->remove($evaluation);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "L'évaluation a bien été supprimé de la base de donnée !"
+        );
+
+        //Récupérer l'user
+        $user = $this->getUser()->getRoles();
+
+        if ($user[0] == 'ROLE_ADMIN') {
+            return $this->redirectToRoute('admin_eval');
+        }
+        elseif ($user[0] == 'ROLE_MANAGER') {
+            return $this->redirectToRoute('manager_eval');
+        }
     }
 
 }

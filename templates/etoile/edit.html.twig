@@ -1,14 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Etoile{% endblock %}
+{% block title %}Modifier Etoile{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h1>Edit Etoile</h1>
+    <h1>Modifier Etoile</h1>
 
-    {{ include('etoile/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('etoile/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('etoile_index') }}">back to list</a>
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('admin_etoile') }}">Retour à la liste</a>
+    {% elseif is_granted('ROLE_MANAGER') %}
+    <a href="{{ path('manager_etoile') }}">Retour à la liste</a>
+    {% else %}
+    {% endif %}
 
 </div>
 {% endblock %}

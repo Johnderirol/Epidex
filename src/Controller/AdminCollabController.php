@@ -26,6 +26,8 @@ class AdminCollabController extends AbstractController
             'collaborateur' => $collaborateur,
         ]);
     }
+    
+
 
     /**
      * @Route("/admin/collaborateur/roles", name="admin_role")

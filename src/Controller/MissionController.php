@@ -12,11 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/admin/mission")
+ * @Route("/admin/competences/mission")
  */
 class MissionController extends AbstractController
 {
-
     /**
      * @Route("/", name="mission_index", methods={"GET"})
      */
@@ -94,23 +93,16 @@ class MissionController extends AbstractController
     }
 
     /**
-     * Permet de suppimer une évaluation
-     * @Route("/delete/{id}", name="mission_delete")
-     * @param Mission $mission
-     * @param EntityManagerInterface $manager
-     * @return Response
+     * @Route("/{id}", name="mission_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Mission $mission, EntityManagerInterface $manager): Response
+    public function delete(Request $request, Mission $mission): Response
     {
-        $manager->remove($mission);
-        $manager->flush();
-
-        $this->addFlash( 
-            'success',
-            "La mission a bien été supprimé de la base de donnée !"
-        );
+        if ($this->isCsrfTokenValid('delete'.$mission->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($mission);
+            $entityManager->flush();
+        }
 
         return $this->redirectToRoute('mission_index');
     }
-
 }

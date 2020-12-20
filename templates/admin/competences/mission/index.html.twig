@@ -1,4 +1,4 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Hello EffectifController!{% endblock %}
 
@@ -10,6 +10,7 @@
     <table class="table">
         <thead>
             <tr class="active">
+                <th>Id</th>
                 <th>Title</th>
                 <th>Filière</th>
                 <th>actions</th>
@@ -18,12 +19,12 @@
         <tbody>
         {% for mission in missions %}
             <tr>
+                <td>{{ mission.id }}</td>
                 <td>{{ mission.title}}</td>
                 <td>{{ mission.filiere}}</td>
                 <td>
                     <a href="{{ path('mission_show', {'id': mission.id}) }}" class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
                     <a href="{{ path('mission_edit', {'id': mission.id}) }}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
-                    <a href="{{ path('mission_delete', {'id': mission.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         {% else %}

@@ -1,4 +1,4 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}PDI index{% endblock %}
 
@@ -6,7 +6,13 @@
 <div class="container">
     <h1>Plan de Développement Individuel</h1>
     <br>
+    {% if is_granted('ROLE_ADMIN') %}
     <h5><a href="{{path('admin_collab')}}">Nouvelle Evaluation</a></h5>
+    {% elseif is_granted('ROLE_MANAGER') %}
+    <h5><a href="{{path('manager_collab')}}">Nouvelle Evaluation</a></h5>
+    {% else %}
+    {% endif %}
+    
     <br>
     <table class="table">
         <thead>
@@ -24,9 +30,16 @@
                 <td>{{ pdi.createdAt ? pdi.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ pdi.endDate ? pdi.endDate|date('Y-m-d') : '' }}</td>
                 <td>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('admin_pdi_show', {'id': pdi.collaborateur.id}) }}" class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
                     <a href="{{ path('admin_pdi_edit', {'id': pdi.collaborateur.id}) }}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
-                    <a href="{{ path('admin_pdi_delete', {'id': pdi.collaborateur.id}) }}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                    <a href="{{ path('admin_pdi_delete', {'id': pdi.id}) }}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                    {% elseif is_granted('ROLE_MANAGER') %}
+                    <a href="{{ path('manager_pdi_show', {'id': pdi.collaborateur.id}) }}" class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('manager_pdi_edit', {'id': pdi.collaborateur.id}) }}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('manager_pdi_delete', {'id': pdi.id}) }}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                    {% else %}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

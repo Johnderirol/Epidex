@@ -39,7 +39,7 @@ class HomeController extends AbstractController{
         $secteur = $secteurRepo->findAll();
         $mission = $missionRepo->findAll();
 
-        return $this->render('admin/dashboard.html.twig',[
+        return $this->render('dashboard.html.twig',[
             'collaborateur'=>$collaborateur,
             'categories'=>$cat,
             'skills'=> $skills,
@@ -64,7 +64,7 @@ class HomeController extends AbstractController{
         $cat = $catRepo->findAll();
 
 
-        return $this->render('manager/dashboard.html.twig',[
+        return $this->render('dashboard.html.twig',[
             'collaborateur'=>$collaborateur,
             'categories'=>$cat,
             'skills'=> $skills,

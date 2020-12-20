@@ -25,7 +25,33 @@ class AdminEvalController extends AbstractController
     {
         $evaluations = $repo->findAll();
 
-        return $this->render('admin/evaluations/evaluation.html.twig', [
+        return $this->render('evaluation/index.html.twig', [
+            'evaluations' => $evaluations,
+        ]);
+    }
+
+    /**
+     * @Route("/manager/evaluations", name="manager_eval")
+     */
+    public function index(EvaluationRepository $repoEval, CollaborateurRepository $repo, SecteurRepository $repoSecteur, RayonRepository $repoRayon)
+    {
+        $user = $this->getUser()->getId();
+        $secteur = $repoSecteur->findByResponsable($user);
+        $rayon = $repoRayon->findBySecteur($secteur);
+
+        
+        $collaborateur = [];
+        foreach ($rayon as $rayonid) {
+            $collaborateur [] = $repo->findByRayon($rayonid);
+        }
+        
+        $evaluations = [];
+        foreach ($collaborateur as $collaborateurs){
+            $evaluations [] = $repoEval->findByCollaborateur($collaborateurs);
+        }
+        
+
+        return $this->render('evaluation/index.html.twig', [
             'evaluations' => $evaluations,
         ]);
     }
@@ -34,6 +60,7 @@ class AdminEvalController extends AbstractController
     /**
      * Permet de retrouver les évaluations d'un rayon
      * @Route("/admin/evaluations/rayon/{id}", name="admin_eval_rayon")
+     * @Route("/manager/evaluations/rayon/{id}", name="manager_eval_rayon")
      */
     public function showRayon( $id, CollaborateurRepository $repoCollab, SkillRepository $skillRepo, CategorieRepository $catRepo, RayonRepository $rayonRepo, RatingRepository $ratRepo) 
     {
@@ -44,7 +71,7 @@ class AdminEvalController extends AbstractController
         $note = $ratRepo->findAll();
 
 
-        return $this->render('admin/evaluations/rayon.html.twig', [
+        return $this->render('evaluations/rayon.html.twig', [
             'collaborateurs' => $collaborateurs, 
             'rayons'=>$rayon,
             'categories'=>$cat,
@@ -56,6 +83,7 @@ class AdminEvalController extends AbstractController
     /**
      * Permet de retrouver les évaluations d'un secteur
      * @Route("/admin/evaluations/secteur/{id}", name="admin_eval_secteur")
+     * @Route("/manager/evaluations/secteur/{id}", name="manager_eval_secteur")
      */
     public function showSecteur( $id, SkillRepository $skillRepo, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, RayonRepository $rayonRepo, CategorieRepository $catRepo, RatingRepository $ratRepo, SecteurRepository $secteurRepo) 
     {
@@ -69,9 +97,8 @@ class AdminEvalController extends AbstractController
         foreach ($rayons as $rayonid) {
             $skillRayon[] = $skillRepo->findAvgNotesByRayon($rayonid);
         }
-        dump($skillRayon);
 
-        return $this->render('admin/evaluations/secteur.html.twig', [
+        return $this->render('evaluations/secteur.html.twig', [
             'collaborateurs' => $collaborateurs, 
             'categories'=>$cat,
             'skillSecteur'=> $skillSecteur,
@@ -81,26 +108,6 @@ class AdminEvalController extends AbstractController
         ]);
     
     
-    }
-
-
-    /**
-     * Permet de suppimer une évaluation
-     * @Route("/admin/delete_evaluation/{id}", name="evaluation_delete")
-     * @param Evaluation $evaluation
-     * @param EntityManagerInterface $manager
-     * @return Response
-     */
-    public function delete(Evaluation $evaluation, EntityManagerInterface $manager) {
-        $manager->remove($evaluation);
-        $manager->flush();
-
-        $this->addFlash(
-            'success',
-            "L'évaluation a bien été supprimé de la base de donnée !"
-        );
-
-        return $this->redirectToRoute('admin_eval');
     }
 
     
