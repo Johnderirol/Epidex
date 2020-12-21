@@ -35,13 +35,13 @@ class PDIController extends AbstractController
     } 
 
     /**
-     * Permet de faire un nouveau PDI
+     * Permet de faire un nouveau ou éditer unPDI
      * @Route("/admin/new/{id}", name="admin_pdi_new", methods={"GET","POST"})
+     * @Route("/admin/edit/{id}", name="admin_pdi_edit", methods={"GET","POST"}) 
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/new/{id}", name="manager_pdi_new", methods={"GET","POST"})
-     * Permet d'éditer un PDI
-     * @Route("/admin/edit/{id}", name="admin_pdi_edit", methods={"GET","POST"})
      * @Route("/manager/edit/{id}", name="manager_pdi_edit", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function new($id, PDI $PDI=null, Request $request, EntityManagerInterface $manager, CollaborateurRepository $repoCollab): Response
     {
@@ -88,8 +88,9 @@ class PDIController extends AbstractController
 
     /**
      * @Route("/admin/{id}", name="admin_pdi_show", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/{id}", name="manager_pdi_show", methods={"GET"})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function show($id, PDIRepository $repoPdi, CollaborateurRepository $repoCollab): Response
     {
@@ -109,8 +110,9 @@ class PDIController extends AbstractController
     /**
      * Permet de suppimer une évaluation
      * @Route("/admin/delete/{id}", name="admin_pdi_delete", requirements={"id":"\d+"}))
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/delete/{id}/", name="manager_pdi_delete", requirements={"id":"\d+"}))
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
+     * @IsGranted("ROLE_MANAGER")
      * @param PDI $pdi
      * @param EntityManagerInterface $manager
      * @return Response
