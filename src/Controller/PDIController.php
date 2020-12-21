@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -18,8 +19,9 @@ class PDIController extends AbstractController
 {
     /**
      * @Route("/admin/pdi", name="admin_pdi")
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/pdi", name="manager_pdi")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function index(PDIRepository $repo)
     {
