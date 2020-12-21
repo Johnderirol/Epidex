@@ -15,6 +15,7 @@ use App\Repository\CollaborateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -25,6 +26,7 @@ class EvaluationController extends AbstractController
 
     /**
      * @Route("/new/{id}", name="evaluation_new")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER') ")
      */
     public function new($id, Request $request, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, SkillRepository $repoSkill)
     {
@@ -106,6 +108,7 @@ class EvaluationController extends AbstractController
 
     /**
      * @Route("/{id}/{slug}", name="evaluation_show")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      * 
      */
     public function show (Evaluation $evaluation)
@@ -117,6 +120,7 @@ class EvaluationController extends AbstractController
 
     /**
      * @Route("/{id}/edit/{slug}", name="evaluation_edit")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER') ")
      */
     public function edit($slug, Request $request, Evaluation $evaluation,CollaborateurRepository $repoCollab): Response
     {
@@ -153,6 +157,7 @@ class EvaluationController extends AbstractController
      * Permet de suppimer une évaluation
      * @Route("/admin/delete_evaluation/{id}", name="evaluation_delete")
      * @Route("/manager/delete_evaluation/{id}", name="manager_evaluation_delete")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      * @param Evaluation $evaluation
      * @param EntityManagerInterface $manager
      * @return Response

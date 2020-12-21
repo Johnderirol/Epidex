@@ -14,12 +14,15 @@ use App\Repository\EvaluationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CollaborateurRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminEvalController extends AbstractController
 {
     /**
      * @Route("/admin/evaluations", name="admin_eval")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function indexEvaluation(EvaluationRepository $repo)
     {
@@ -32,6 +35,7 @@ class AdminEvalController extends AbstractController
 
     /**
      * @Route("/manager/evaluations", name="manager_eval")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function index(EvaluationRepository $repoEval, CollaborateurRepository $repo, SecteurRepository $repoSecteur, RayonRepository $repoRayon)
     {
@@ -61,6 +65,7 @@ class AdminEvalController extends AbstractController
      * Permet de retrouver les évaluations d'un rayon
      * @Route("/admin/evaluations/rayon/{id}", name="admin_eval_rayon")
      * @Route("/manager/evaluations/rayon/{id}", name="manager_eval_rayon")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      */
     public function showRayon( $id, CollaborateurRepository $repoCollab, SkillRepository $skillRepo, CategorieRepository $catRepo, RayonRepository $rayonRepo, RatingRepository $ratRepo) 
     {
@@ -84,6 +89,7 @@ class AdminEvalController extends AbstractController
      * Permet de retrouver les évaluations d'un secteur
      * @Route("/admin/evaluations/secteur/{id}", name="admin_eval_secteur")
      * @Route("/manager/evaluations/secteur/{id}", name="manager_eval_secteur")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      */
     public function showSecteur( $id, SkillRepository $skillRepo, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, RayonRepository $rayonRepo, CategorieRepository $catRepo, RatingRepository $ratRepo, SecteurRepository $secteurRepo) 
     {

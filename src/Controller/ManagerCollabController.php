@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
-use App\Repository\CollaborateurRepository;
 use App\Repository\RayonRepository;
 use App\Repository\SecteurRepository;
+use App\Repository\CollaborateurRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ManagerCollabController extends AbstractController
 {
     /**
      * @Route("/manager/collaborateur", name="manager_collab")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function index(CollaborateurRepository $repo, SecteurRepository $repoSecteur, RayonRepository $repoRayon)
     {

@@ -2,18 +2,19 @@
  
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Collaborateur;
+use App\Entity\Rayon;
 use App\Entity\Mission;
 use App\Entity\Secteur;
-use App\Entity\Rayon;
-use App\Repository\CollaborateurRepository;
+use App\Entity\Collaborateur;
+use App\Form\CollaborateurType;
 use App\Repository\MissionRepository;
 use App\Repository\SecteurRepository;
-use App\Form\CollaborateurType;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CollaborateurRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 
@@ -24,6 +25,7 @@ class EffectifController extends AbstractController
      /**
      * @Route("/effectif/nouveau", name="new_collab")
      * @Route("/effectif/{matricule}/edit", name="edit_collab") 
+     * @IsGranted("ROLE_USER")
      */
     public function create (Collaborateur $collaborateur=null, Request $request, EntityManagerInterface $manager)
         
@@ -59,6 +61,7 @@ class EffectifController extends AbstractController
     
     /**
      * @Route("/effectif", name="effectif")
+     * @IsGranted("ROLE_USER")
      */
     public function index(CollaborateurRepository $repo)
     {
@@ -72,6 +75,7 @@ class EffectifController extends AbstractController
     
     /**
      * @Route("/effectif/collab/{id}", name="collab")
+     * @IsGranted("ROLE_USER")
      * 
      */
     public function showCollab(Collaborateur $collaborateur) 
@@ -87,6 +91,7 @@ class EffectifController extends AbstractController
     
     /**
      * @Route("/effectif/mission/{id}", name="mission")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function showMission($id, Mission $mission, EntityManagerInterface $manager) 
     {

@@ -51,6 +51,7 @@ class AccountController extends AbstractController
     /**
      * Permet de se déconnecter
      * @Route("/logout", name="account_logout")
+     * @IsGranted("ROLE_USER")
      * @return void
      */
     public function logout() {
@@ -62,6 +63,7 @@ class AccountController extends AbstractController
      * Permet d'afficher le formulaire d'inscription
      * @Route("/register", name="account_register")
      * @Route("/register/{id}/edit", name="edit_register_collab")
+     * @IsGranted("ROLE_USER")
      * 
      * @return Response
      */

@@ -5,12 +5,7 @@
 {% block body %}
 <div class="container">
     <h1>Etoile des competences</h1>
-    {% if is_granted('ROLE_ADMIN') %}
     {{ include('admin/service/padeletoile.html.twig') }}
-    {% elseif is_granted('ROLE_MANAGER') %}
-    {{ include('manager/service/padeletoile.html.twig') }}
-    {% else %}
-    {% endif %}
     
     <table class="table">
         <thead>

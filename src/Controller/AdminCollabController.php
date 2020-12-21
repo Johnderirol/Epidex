@@ -11,12 +11,14 @@ use App\Repository\CollaborateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminCollabController extends AbstractController
 {
     /**
      * @Route("/admin/collaborateur", name="admin_collab")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(CollaborateurRepository $repo)
     {
@@ -31,6 +33,7 @@ class AdminCollabController extends AbstractController
 
     /**
      * @Route("/admin/collaborateur/roles", name="admin_role")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function roles(RoleRepository $repoRole, CollaborateurRepository $repo)
     {
@@ -47,6 +50,7 @@ class AdminCollabController extends AbstractController
     /**
      * Permet de suppimer une étoile des compétences
      * @Route("/admin/collaborateur/roles/delete/{collab}/{role}", name="role_delete")
+     * @IsGranted("ROLE_ADMIN")
      * @param Collaborateur $collaborateur
      * @param EntityManagerInterface $manager
      * @return Response
