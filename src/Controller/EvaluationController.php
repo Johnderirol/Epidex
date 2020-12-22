@@ -114,6 +114,7 @@ class EvaluationController extends AbstractController
      */
     public function show (Evaluation $evaluation)
     {   
+        dump($evaluation);
         return $this->render('evaluation/show.html.twig', [
             'evaluation' => $evaluation,
         ]);
@@ -156,7 +157,7 @@ class EvaluationController extends AbstractController
 
     /**
      * Permet de suppimer une évaluation
-     * @Route("/admin/delete_evaluation/{id}", name="evaluation_delete")
+     * @Route("/admin/delete_evaluation/{id}", name="admin_evaluation_delete")
      * @Route("/manager/delete_evaluation/{id}", name="manager_evaluation_delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      * @param Evaluation $evaluation

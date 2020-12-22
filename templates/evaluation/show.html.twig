@@ -7,7 +7,7 @@
     <h1>Evaluation de {{evaluation.collaborateur.fullName}}</h1>
 
     <p>Date : {{ evaluation.createdAt ? evaluation.createdAt|date('Y-m-d H:i:s') : '' }}</p>
-    <p>Evaluateur : {{ evaluation.auteur }}
+    <p>Evaluateur : {{ evaluation.auteur.fullName }}
 
     <div class="table table-hover">
       <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="table_id">
@@ -22,7 +22,7 @@
         {% for rating in evaluation.ratings %}
          <tr class="gradeX">
             <td class="center hidden-phone">{{rating.competences.title}}</td>
-            <td class="center hidden-phone">{{rating.competences.categorie}}</td>
+            <td class="center hidden-phone">{{rating.competences.category.title}}</td>
             <td class="center hidden-phone">{{rating.note}}</td>
 
         </tr>
@@ -41,7 +41,12 @@
 
     
 
-    <a href="{{ path('evaluation_index') }}">back to list</a>
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{path('admin_eval')}}">Retour</a>
+        {% elseif is_granted('ROLE_MANAGER') %}
+        <a href="{{ path('manager_eval') }}">Retour</a>
+        {% else %}
+        {% endif %}
 
     <a href="{{ path('evaluation_edit', {'id': evaluation.id, 'slug': evaluation.collaborateur.slug})}}">edit</a>
 </div>
