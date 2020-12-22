@@ -43,7 +43,7 @@ class RegistrationType extends ApplicationType
                 'required' => false,
                 'empty_data' => 'Présentez-vous en quelques mots !!!',
             ])
-            ->add('hash', HiddenType::class, ['empty_data' => 'password@LM155'])
+            ->add('hash', PasswordType::class, ['empty_data' => 'password@LM155'])
             ->add('statut', ChoiceType::class, [
             'choices'  => [
                 'Employé' => 'Employé',
