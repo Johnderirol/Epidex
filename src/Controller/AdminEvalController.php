@@ -27,7 +27,7 @@ class AdminEvalController extends AbstractController
     public function indexEvaluation(EvaluationRepository $repo)
     {
         $evaluations = $repo->findAll();
-        dump($evaluations);
+
         return $this->render('evaluation/index.html.twig', [
             'evaluations' => $evaluations,
         ]);
