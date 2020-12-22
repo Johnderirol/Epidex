@@ -114,7 +114,7 @@ class EvaluationController extends AbstractController
      */
     public function show (Evaluation $evaluation)
     {   
-        dump($evaluation);
+        
         return $this->render('evaluation/show.html.twig', [
             'evaluation' => $evaluation,
         ]);
