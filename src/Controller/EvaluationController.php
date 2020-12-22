@@ -157,9 +157,8 @@ class EvaluationController extends AbstractController
     /**
      * Permet de suppimer une évaluation
      * @Route("/admin/delete_evaluation/{id}", name="evaluation_delete")
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/delete_evaluation/{id}", name="manager_evaluation_delete")
-     * @IsGranted("ROLE_MANAGER")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      * @param Evaluation $evaluation
      * @param EntityManagerInterface $manager
      * @return Response

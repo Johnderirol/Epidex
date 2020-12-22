@@ -90,11 +90,9 @@ class EtoileController extends AbstractController
 
     /**
      * @Route("/admin/etoile/{id}/mission", name="admin_etoile_mission")
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/etoile/{id}/mission", name="manager_etoile_mission")
-     * @IsGranted("ROLE_MANAGER")
      * @Route("/{id}/mission", name="etoile_mission")
-     * @IsGranted("ROLE_USER")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER')")
      */
     public function mission($id, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, Request $request) 
     {    
@@ -146,11 +144,9 @@ class EtoileController extends AbstractController
     /**
      * Permet de faire une nouvelle étoile de compétence
      * @Route("/admin/etoile/new/{id}", name="admin_etoile_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/etoile/{id}/new", name="manager_etoile_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_MANAGER")
      * @Route("/{id}/new", name="etoile_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_USER")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER')")
      */
     public function new($id, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, CompEtoileRepository $repoComp, Request $request): Response
     {
@@ -224,11 +220,9 @@ class EtoileController extends AbstractController
     /**
      * Permet d'éditer une étoile de compétence
      * @Route("/admin/etoile/{id}/edit", name="admin_etoile_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/etoile/{id}/edit", name="manager_etoile_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_MANAGER")
      * @Route("/{id}/edit", name="etoile_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_USER")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER')")
      */
     public function edit(Request $request, Etoile $etoile): Response
     {
@@ -261,9 +255,8 @@ class EtoileController extends AbstractController
 
     /**
      * @Route("/admin/etoile/{id}", name="admin_etoile_show", methods={"GET"})
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/etoile/{id}", name="manager_etoile_show", methods={"GET"})
-     * @IsGranted("ROLE_ADMIN")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      * 
      */
     public function show(Etoile $etoile)
@@ -276,9 +269,8 @@ class EtoileController extends AbstractController
     /**
      * Permet de suppimer une étoile des compétences
      * @Route("/admin/etoile/delete/{id}", name="admin_etoile_delete")
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/manager/etoile/{id}/delete", name="manager_etoile_delete")
-     * @IsGranted("ROLE_MANAGER")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
      * @param Etoile $etoile
      * @param EntityManagerInterface $manager
      * @return Response
