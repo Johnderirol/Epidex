@@ -37,7 +37,12 @@ class RegistrationType extends ApplicationType
                 'required' => false,
                 'empty_data' => 'http://cdn.onlinewebfonts.com/svg/img_24787.png',
             ])
-            ->add('description', TextareaType::class, $this->getConfiguration("Présentation", "Présentez-vous en quelques mots"))
+            ->add('description', TextareaType::class, [
+                'attr' => 
+                    ['placeholder' => "Présentez-vous en quelques mots" ],
+                'required' => false,
+                'empty_data' => 'Présentez-vous en quelques mots !!!',
+            ])
             ->add('hash', HiddenType::class, ['empty_data' => 'password@LM155'])
             ->add('statut', ChoiceType::class, [
             'choices'  => [

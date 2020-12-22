@@ -205,14 +205,16 @@ var ctx = document.getElementById('{{cat.slug}}').getContext('2d');
 
 var data = {
         labels:[
-            {% set compArray = [] %}   
-            {% for rating in ratings %}
+            {% set compArray = [] %}  
+            {% for evaluation in user.evaluations %} 
+            {% for rating in evaluation.ratings %}
             {% if rating.competences.title not in compArray %}
                 {% if rating.competences.category.slug == cat.slug %}
                 "{{rating.competences.title}}",
                 {% endif %}
                 {% set compArray = compArray|merge([rating.competences.title]) %}
             {% endif %}
+            {% endfor %}
             {% endfor %}
             ],
 
@@ -277,11 +279,13 @@ var ctx = document.getElementById('etoile').getContext('2d');
 var data = {
         labels:[
             {% set compArray = [] %}   
+            {% for etoile in etoiles %}
             {% for rating in ratingEtoiles %}
             {% if rating.competences.title not in compArray %}
                 "{{rating.competences.title}}",
                 {% set compArray = compArray|merge([rating.competences.title]) %}
             {% endif %}
+            {% endfor %}
             {% endfor %}
             ],
 
