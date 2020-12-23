@@ -76,7 +76,7 @@ class AdminEvalController extends AbstractController
         $note = $ratRepo->findAll();
 
 
-        return $this->render('evaluations/rayon.html.twig', [
+        return $this->render('evaluation/rayon.html.twig', [
             'collaborateurs' => $collaborateurs, 
             'rayons'=>$rayon,
             'categories'=>$cat,
@@ -104,7 +104,7 @@ class AdminEvalController extends AbstractController
             $skillRayon[] = $skillRepo->findAvgNotesByRayon($rayonid);
         }
 
-        return $this->render('evaluations/secteur.html.twig', [
+        return $this->render('evaluation/secteur.html.twig', [
             'collaborateurs' => $collaborateurs, 
             'categories'=>$cat,
             'skillSecteur'=> $skillSecteur,
