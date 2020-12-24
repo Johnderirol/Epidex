@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Categorie;
 use App\Entity\Skill;
 use App\Entity\Rating;
 use App\Form\ApplicationType;
@@ -23,12 +24,16 @@ class RatingType extends ApplicationType
             ->add('competences', EntityType::class, [
                 'class' => Skill::class,
                 'choice_label' => 'title',
-                'label'=>'description'
+                'group_by' => function (Skill $skill) {
+                    return $skill->getCategory()->getTitle();
+                }
             ])
             ->add('note', RangeType::class, [
                 'attr' => [
                     'min' => 1,
-                    'max' => 4
+                    'max' => 4,
+                    'step' => 1,
+                    'value' => 2
                 ]
             ])
         ;
