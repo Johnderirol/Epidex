@@ -8,17 +8,7 @@
     {% endfor %}
     </h1>
     <br>
-        <div class="panel panel-default col-md-6">
-            <div class="panel-heading">Cartographie générale du rayon</div>
-            <div class="panel-body">
-            {% for cat in categories %}
-                <div class="panel-body">
-                    <canvas id="{{cat.slug}}" class="chartjs"></canvas>
-                </div>
-            {% endfor %}
-            </div>
-        </div>
-        <div class="panel panel-default col-md-6">
+        <div class="panel panel-default">
             <div class="panel-heading">Cartographie détaillée du rayon</div>
             <div class="panel-body">
              {% for cat in categories %}
@@ -34,7 +24,7 @@
 {% for cat in categories %}
 <script>
 
-var ctx = document.getElementById('{{cat.slug}}').getContext('2d');
+var ctx = document.getElementById('{{cat.slug}}.collab').getContext('2d');
 
 var data = {
         labels:
@@ -46,8 +36,9 @@ var data = {
         {% endfor %}
         ],
 
-        datasets:[{
-            label:"{{cat.title}}",
+        datasets:
+        [{
+            label:"MOYENNE - {{cat.title}}",
             data:
             [
             {% for skill in skills %}
@@ -64,46 +55,7 @@ var data = {
             pointHoverBackgroundColor:"#fff",
             pointHoverBorderColor:"rgb(255, 99, 132)",
             
-        }]};
-
-var options = {
-    scale: {
-    angleLines: {
-        display: true
-    },
-    ticks: {
-        suggestedMin: 0,
-        suggestedMax: 4
-    }
-}
-};
-
-var config =  {
-            type:'radar',
-            data: data, 
-            options : options
-        }
-        var graph = new Chart (ctx, config)
-
-
-</script>
-{% endfor %}
-{% for cat in categories %}
-<script>
-
-var ctx = document.getElementById('{{cat.slug}}.collab').getContext('2d');
-
-var data = {
-        labels:
-        [
-        {% for skill in skills %}
-            {% if skill.competence.category.slug == cat.slug %}
-            "{{skill.competence.title}}",
-            {% endif %}
-        {% endfor %}
-        ],
-
-        datasets:[
+        },
         {% for collaborateur in collaborateurs %}
         {
             label:
