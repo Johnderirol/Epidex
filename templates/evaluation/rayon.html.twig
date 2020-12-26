@@ -12,6 +12,7 @@
             <div class="panel-heading">Cartographie détaillée du rayon</div>
             <div class="panel-body">
              {% for cat in categories %}
+                <h4><center><span class="label label-success"> Compétences {{cat.title}}</span></center></h4>
                 <div class="panel-body">
                     <canvas id="{{cat.slug}}.collab" class="chartjs"></canvas>
                 </div>
