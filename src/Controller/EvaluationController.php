@@ -7,6 +7,7 @@ use App\Entity\Rating;
 use App\Entity\Evaluation;
 use App\Form\EvaluationType;
 use App\Entity\Collaborateur;
+use App\Repository\CategorieRepository;
 use App\Repository\SkillRepository;
 use App\Repository\RatingRepository;
 use App\Repository\EvaluationRepository;
@@ -29,7 +30,7 @@ class EvaluationController extends AbstractController
      * @Route("/new/{id}", name="evaluation_new")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER') ")
      */
-    public function new($id, Request $request, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, SkillRepository $repoSkill)
+    public function new($id, Request $request, EntityManagerInterface $manager, CategorieRepository $repoCat, CollaborateurRepository $repoCollab, SkillRepository $repoSkill)
     {
         $comp = $repoSkill->findAll();
 
@@ -47,7 +48,8 @@ class EvaluationController extends AbstractController
         "SELECT s.id
         FROM App\Entity\Skill s
         LEFT JOIN s.missions m 
-        WHERE m.id = " .$missionId
+        WHERE m.id = $missionId
+        ORDER BY s.category"
         );
         $skills = $query->getResult();
 
