@@ -9,6 +9,7 @@
         "composer/package-versions-deprecated": "^1.10",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.1",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "fzaninotto/faker": "^1.9",
@@ -41,8 +42,8 @@
         "symfony/validator": "5.1.*",
         "symfony/web-link": "5.1.*",
         "symfony/yaml": "5.1.*",
+        "twbs/bootstrap": "5.0.0-beta1",
         "twig/extra-bundle": "^2.12|^3.0",
-        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
