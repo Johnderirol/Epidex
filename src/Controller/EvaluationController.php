@@ -66,7 +66,7 @@ class EvaluationController extends AbstractController
         $rating->setRayon($rayon);
         $evaluation->addRating($rating);
         }
-    
+        
         $form = $this->createForm(EvaluationType::class, $evaluation);
         $form->handleRequest($request);
 
@@ -96,7 +96,7 @@ class EvaluationController extends AbstractController
             else {
                 return $this->redirectToRoute('account_index');
             }
-            
+        
             
         }
 

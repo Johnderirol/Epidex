@@ -74,6 +74,12 @@ class AccountController extends AbstractController
         if(!$collaborateur){
             $collaborateur = new Collaborateur();
         }
+        
+        //Gestion des mots de passes existants et manquants
+        $password=$collaborateur->getHash();
+        $prenom=strtolower($collaborateur->getPrenom());
+        $nom=strtolower($collaborateur->getNom());
+        $autopass= $prenom.'.'.$nom.'@LM155';
 
         $collabColor = $collaborateur->getColor();
         if(empty($collabColor)){
@@ -87,7 +93,11 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid()){   
-            $hash = $encoder->encodePassword($collaborateur, $collaborateur->getHash());
+            if (empty($password)) {
+                $hash = $encoder->encodePassword($collaborateur, $autopass);
+            } else {
+                $hash = $encoder->encodePassword($collaborateur, $collaborateur->getHash());
+            }
             $collaborateur->setHash($hash);
             $collaborateur->setColor($color);
             $manager->persist($collaborateur);
