@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MissionCibleController extends AbstractController
 {
     /**
-     * @Route("/", name="mission_cible_index", methods={"GET"})
+     * @Route("/index", name="mission_cible_index", methods={"GET"})
      */
     public function index(MissionCibleRepository $missionCibleRepository): Response
     {

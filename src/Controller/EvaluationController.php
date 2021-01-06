@@ -126,32 +126,69 @@ class EvaluationController extends AbstractController
      * @Route("/{id}/edit/{slug}", name="evaluation_edit")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER') ")
      */
-    public function edit($slug, Request $request, Evaluation $evaluation,CollaborateurRepository $repoCollab): Response
+    public function edit($slug, $id, Request $request, EvaluationRepository $repoEval, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, SkillRepository $repoSkill): Response
     {
+        $comp = $repoSkill->findAll();
+
         //Récupérer l'user
         $user = $this->getUser()->getRoles();
-
+        //Récupérer le collaborater
         $collaborateur = $repoCollab->findOneBySlug($slug);
+        $rayon = $collaborateur->getRayon();
+        $missionCollab = $collaborateur->getMission();
+        $missionId = $missionCollab->getId();
+
+        //DQL pour les skills correspondantes à la mission
+        $query = $manager->createQuery(
+        "SELECT s.id
+        FROM App\Entity\Skill s
+        LEFT JOIN s.missions m 
+        WHERE m.id = $missionId
+        ORDER BY s.category"
+        );
+        $skills = $query->getResult();
+
+
+        //Récupérer l'évaluation
+        $evaluation = $repoEval->findOneById($id);
+        
         $form = $this->createForm(EvaluationType::class, $evaluation);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if($form->isSubmitted() && $form->isValid()){ 
+            foreach ($evaluation->getRatings() as $rating){
+                $rating->setEvaluation($evaluation);
+                $rating->setRayon($rayon);
+                $manager->persist($rating);
+            }
+            $evaluation->setAuteur($this->getUser());
+            $evaluation->setCollaborateur($collaborateur);
+            $evaluation->setCreatedAt(new \DateTime());
+            $manager->persist($evaluation);
+            $manager->flush();
 
-            if ($user[0] = 'ROLE_ADMIN') {
+            $this->addFlash(
+                'success',
+                "L'évaluation est prise en compte !!!"
+            );
+            
+            if ($user[0] == 'ROLE_ADMIN') {
                 return $this->redirectToRoute('admin_eval');
             }
-            elseif ($user[0] = 'ROLE_MANAGER') {
+            elseif ($user[0] == 'ROLE_MANAGER') {
                 return $this->redirectToRoute('manager_eval');
             }
             else {
                 return $this->redirectToRoute('account_index');
             }
+        
+            
         }
 
         return $this->render('evaluation/edit.html.twig', [
             'evaluation' => $evaluation,
             'collaborateur' => $collaborateur,
+            'comps'=>$comp,
             'form' => $form->createView(),
         ]);
     }
