@@ -210,4 +210,34 @@ class AccountController extends AbstractController
         return $this->redirectToRoute("admin_collab");
     }
 
+
+    /**
+     * Permet de remettre un mot de passe par défaut
+     * @Route("/account/{id}/password_edit", name="userpass_edit")
+     * @Security("is_granted('ROLE_ADMIN')", message="Vous n'avez pas le droit de supprimer un collaborateur, Contactez l'admin")
+     * @param Collaborateur $collaborateur
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function passEdit(Collaborateur $collaborateur, UserPasswordEncoderInterface $encoder, EntityManagerInterface $manager) {
+
+        //On prend les données du collab
+        $prenom=strtolower($collaborateur->getPrenom());
+        $nom=strtolower($collaborateur->getNom());
+        $autopass= $prenom.'.'.$nom.'@LM155';
+
+        //On agit sur le password
+        $hash =$encoder->encodePassword($collaborateur, $autopass);
+        $collaborateur->setHash($hash);
+        $manager->persist($collaborateur);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "{$collaborateur->getFullName()} a un nouveau mot de passe !"
+        );
+
+        return $this->redirectToRoute("dashboard");
+    }
+
 }

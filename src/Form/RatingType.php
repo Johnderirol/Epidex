@@ -32,7 +32,8 @@ class RatingType extends ApplicationType
                 'attr' => [
                     'min' => 1,
                     'max' => 4,
-                    'step' => 1                ]
+                    'step' => 1                
+                    ]
             ])
         ;
     }

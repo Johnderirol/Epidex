@@ -20,6 +20,10 @@
                         <a href="{{path('etoile_new',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Auto-Evaluation Evolution</a>
                         {% else %}
                         {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{path('userpass_edit',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Réinitialiser Mot de Passe</a>
+                        {% else %}
+                        {% endif %}
                     </div>         
                 <hr> 
                 <h4>Rayon : 
