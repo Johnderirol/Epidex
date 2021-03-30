@@ -23,7 +23,8 @@ class RatingType extends ApplicationType
         $builder
             ->add('competences', EntityType::class, [
                 'class' => Skill::class,
-                'choice_label' => 'title',
+                'choice_label' => function (Skill $skill) {
+                    return $skill->getCategory()->getTitle() . " - " . $skill->getTitle();},
                 'group_by' => function (Skill $skill) {
                     return $skill->getCategory()->getTitle();
                 }
