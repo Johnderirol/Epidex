@@ -45,10 +45,8 @@
             <tbody>
             {% for skill in mission.skills %}
             <tr>
-              {% if skill.category == "Métier" %}
                   <td class="center hidden-phone">{{skill.title}}</td>
                   <td class="center hidden-phone">{{skill.description}}</td>
-              {% endif %}
               </tr>
             {% endfor %}
             </tbody>
