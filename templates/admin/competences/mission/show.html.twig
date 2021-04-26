@@ -47,7 +47,7 @@
             {% for skill in mission.skills %}
               <tr>
                   <td class="center hidden-phone">{{skill.title}}</td>
-                  <td class="center hidden-phone">{{skill.category}}</td>
+                  <td class="center hidden-phone">{{skill.category.title}}</td>
                   <td class="center hidden-phone">{{skill.description}}</td>
               </tr>
             {% endfor %}
