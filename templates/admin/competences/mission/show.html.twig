@@ -39,13 +39,15 @@
             <thead>
               <tr class="success">
                 <th class="th-sm">Compétences</th> 
+                <th class="th-sm">Catégorie</th> 
                 <th class="th-sm">Description</th> 
               </tr>
             </thead>
             <tbody>
             {% for skill in mission.skills %}
-            <tr>
+              <tr>
                   <td class="center hidden-phone">{{skill.title}}</td>
+                  <td class="center hidden-phone">{{skill.category}}</td>
                   <td class="center hidden-phone">{{skill.description}}</td>
               </tr>
             {% endfor %}
