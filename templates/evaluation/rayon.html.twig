@@ -5,8 +5,13 @@
     <h1>Rayon : 
     {% for rayon in rayons %}
         {{rayon.title}}
-    {% endfor %}
     </h1>
+    <h3>
+    {% for collab in rayon %}
+        {{collab.fullName}} - 
+    {% endfor %}
+    </h3>
+    {% endfor %}
     <br>
         <div class="panel panel-default">
             <div class="panel-heading">Cartographie détaillée du rayon</div>

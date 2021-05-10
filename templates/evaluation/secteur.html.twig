@@ -5,8 +5,13 @@
     <h1>Secteur : 
     {% for secteur in secteurs %}
         {{secteur.title}}
-    {% endfor %}  
     </h1>
+    <h3> 
+    {% for rayons in secteur %}
+        {{rayons.title}} -
+    {% endfor %}
+    </h3>
+    {% endfor %}  
     <br>
         <div class="panel panel-default">
             <div class="panel-heading">Cartographie détaillée du secteur</div>

@@ -96,16 +96,16 @@
                         </div>
                     </div>
                     {% endfor %}
-                    <div class="row">
-                        <div class="panel panel-default">
-                            {% for cat in categories %}
-                                <h4><center><span class="label label-success"> Compétences {{cat.title}}</span></center></h4>
-                                <div class="panel-body">
-                                    <canvas id="{{cat.slug}}" class="chartjs"></canvas>
-                                </div>
-                            {% endfor %}
-                                <br>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        {% for cat in categories %}
+                            <h4><center><span class="label label-success"> Compétences {{cat.title}}</span></center></h4>
+                            <div class="panel-body">
+                                <canvas id="{{cat.slug}}" class="chartjs"></canvas>
+                            </div>
+                        {% endfor %}
+                            <br>
                     </div>
                 </div>
             </div>
