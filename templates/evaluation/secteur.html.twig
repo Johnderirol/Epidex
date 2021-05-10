@@ -7,8 +7,10 @@
         {{secteur.title}}
     </h1>
     <h3> 
-    {% for rayons in secteur %}
-        {{rayons.title}} -
+    {% for rayons in secteur.rayons %}
+    <a href="{{ path('manager_eval_rayon',{'id':rayons.id})}}">
+        {{rayons.title}}    
+    </a>
     {% endfor %}
     </h3>
     {% endfor %}  

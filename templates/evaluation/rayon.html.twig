@@ -6,11 +6,13 @@
     {% for rayon in rayons %}
         {{rayon.title}}
     </h1>
-    <h3>
-    {% for collab in rayon %}
-        {{collab.fullName}} - 
+    <h5>
+    {% for collab in rayon.collaborateur %}
+    <a href="{{ path('user_show',{'id':collab.id})}}">
+        - {{collab.fullName}}    
+    </a>    
     {% endfor %}
-    </h3>
+    </h5>
     {% endfor %}
     <br>
         <div class="panel panel-default">
