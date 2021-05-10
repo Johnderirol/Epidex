@@ -39,6 +39,36 @@ class Etoile
      */
     private $ratingEtoiles;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $missionProjet;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $retours;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $comprehension;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $atouts;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $axes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firstActions;
+
     public function __construct()
     {
         $this->ratingEtoiles = new ArrayCollection();
@@ -112,6 +142,78 @@ class Etoile
                 $ratingEtoile->setEtoile(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMissionProjet(): ?string
+    {
+        return $this->missionProjet;
+    }
+
+    public function setMissionProjet(string $missionProjet): self
+    {
+        $this->missionProjet = $missionProjet;
+
+        return $this;
+    }
+
+    public function getRetours(): ?string
+    {
+        return $this->retours;
+    }
+
+    public function setRetours(?string $retours): self
+    {
+        $this->retours = $retours;
+
+        return $this;
+    }
+
+    public function getComprehension(): ?string
+    {
+        return $this->comprehension;
+    }
+
+    public function setComprehension(string $comprehension): self
+    {
+        $this->comprehension = $comprehension;
+
+        return $this;
+    }
+
+    public function getAtouts(): ?string
+    {
+        return $this->atouts;
+    }
+
+    public function setAtouts(?string $atouts): self
+    {
+        $this->atouts = $atouts;
+
+        return $this;
+    }
+
+    public function getAxes(): ?string
+    {
+        return $this->axes;
+    }
+
+    public function setAxes(?string $axes): self
+    {
+        $this->axes = $axes;
+
+        return $this;
+    }
+
+    public function getFirstActions(): ?string
+    {
+        return $this->firstActions;
+    }
+
+    public function setFirstActions(?string $firstActions): self
+    {
+        $this->firstActions = $firstActions;
 
         return $this;
     }

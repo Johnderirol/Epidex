@@ -46,6 +46,11 @@ class CompEtoile
      */
     private $comp;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $def;
+
 
     /**
      * @ORM\PrePersist
@@ -160,6 +165,18 @@ class CompEtoile
                 $comp->setCompetences(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDefinition(): ?string
+    {
+        return $this->definition;
+    }
+
+    public function setDefinition(?string $definition): self
+    {
+        $this->definition = $definition;
 
         return $this;
     }
