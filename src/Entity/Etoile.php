@@ -40,11 +40,6 @@ class Etoile
     private $ratingEtoiles;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $missionProjet;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $retours;
@@ -142,18 +137,6 @@ class Etoile
                 $ratingEtoile->setEtoile(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getMissionProjet(): ?string
-    {
-        return $this->missionProjet;
-    }
-
-    public function setMissionProjet(string $missionProjet): self
-    {
-        $this->missionProjet = $missionProjet;
 
         return $this;
     }
