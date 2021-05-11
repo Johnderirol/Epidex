@@ -153,13 +153,11 @@ class EtoileController extends AbstractController
         
         //Récupérer l'user
         $user = $this->getUser()->getRoles();
-        dump ($user);
         //Récupérer Collaborateur grâce au Id
         $collaborateur = $repoCollab->findOneById($id);
         $missionCible = $collaborateur->getMissionCible();
         $missionId = $missionCible->getId();
 
-        dump($missionCible);
 
         //DQL pour les Comp correspondantes à la mission
         $query = $manager->createQuery(
