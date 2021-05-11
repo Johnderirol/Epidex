@@ -11,6 +11,10 @@
     <br>
     <div class="panel-body">
         <canvas id="missionCibleCanvas" class="chartjs"></canvas>
+        {% for comp in missionCible.competences %}
+            {{dump(comp)}}
+            "{{comp.title}} : {{comp.def}}",
+        {% endfor %}
     </div>
     <br>
     {{ include('etoile/_form.html.twig') }}
