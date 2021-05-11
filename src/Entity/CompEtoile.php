@@ -169,14 +169,14 @@ class CompEtoile
         return $this;
     }
 
-    public function getDefinition(): ?string
+    public function getDef(): ?string
     {
-        return $this->definition;
+        return $this->def;
     }
 
-    public function setDefinition(?string $definition): self
+    public function setDef(?string $def): self
     {
-        $this->definition = $definition;
+        $this->def = $def;
 
         return $this;
     }

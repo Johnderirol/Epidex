@@ -150,7 +150,7 @@ class EtoileController extends AbstractController
      */
     public function new($id, EntityManagerInterface $manager, CollaborateurRepository $repoCollab, CompEtoileRepository $repoComp, Request $request): Response
     {
-        $comp = $repoComp->findAll();
+        
         //Récupérer l'user
         $user = $this->getUser()->getRoles();
         dump ($user);
@@ -158,6 +158,8 @@ class EtoileController extends AbstractController
         $collaborateur = $repoCollab->findOneById($id);
         $missionCible = $collaborateur->getMissionCible();
         $missionId = $missionCible->getId();
+
+        dump($missionCible);
 
         //DQL pour les Comp correspondantes à la mission
         $query = $manager->createQuery(
@@ -214,6 +216,8 @@ class EtoileController extends AbstractController
         return $this->render('etoile/new.html.twig', [
             'etoile' => $etoile,
             'form' => $form->createView(),
+            'missionCible'=>$missionCible,
+            
         ]);
     }
 

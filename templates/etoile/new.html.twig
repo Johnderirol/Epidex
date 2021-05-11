@@ -7,7 +7,12 @@
 {% block body %}
 <div class="container">
     <h1>Nouvelle Etoile de compétence</h1>
-
+    <h3><a href="">{{missionCible.title}}</a></h3>
+    <br>
+    <div class="panel-body">
+        <canvas id="missionCibleCanvas" class="chartjs"></canvas>
+    </div>
+    <br>
     {{ include('etoile/_form.html.twig') }}
 
     {% if is_granted('ROLE_ADMIN') %}
@@ -50,3 +55,59 @@
         </div>
     </div>
 {%  endblock %} 
+
+{% block javascripts %}
+<script>
+
+var ctx = document.getElementById('missionCibleCanvas').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for comp in missionCible.competences %}
+            "{{comp.title}} - {{comp.def}}",
+        {% endfor %}
+        ],
+
+        datasets:
+        [{
+            label:"{{missionCible.title}}",
+            data:
+            [
+            {% for comp in missionCible.competences %}
+                "4",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(0, 128, 64, 0.2)",
+            borderColor:"rgb(0, 128, 64) ",
+            pointBackgroundColor:"rgb(0, 128, 64)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(0, 128, 64)",
+            
+        },
+        ]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{%  endblock %}

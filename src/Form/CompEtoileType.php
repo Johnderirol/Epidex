@@ -18,6 +18,7 @@ class CompEtoileType extends ApplicationType
         $builder
             ->add('title', TextType::class, $this->getConfiguration("Titre", "Titre"))
             ->add('description', TextareaType::class, $this->getConfiguration("Description", "Description"))
+            ->add('def', TextareaType::class, $this->getConfiguration("Définition", "Définition"))
             ->add('missionCibles', EntityType::class, [
                 'class' => MissionCible::class,
                 'choice_label' => 'title',
