@@ -28,7 +28,6 @@ class UserController extends AbstractController
         $pdis = $repoPDI->findByCollaborateur($user);
         $categorie = $repoCat->findAll();
         $etoile = $repoEtoile->findByCollaborateur($user);
-
         
         return $this->render('user/index.html.twig', [
             'user' => $user, 

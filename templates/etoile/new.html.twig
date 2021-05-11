@@ -9,12 +9,32 @@
     <h1>Nouvelle Etoile de compétence</h1>
     <h3><a href="">{{missionCible.title}}</a></h3>
     <br>
-    <div class="panel-body">
-        <canvas id="missionCibleCanvas" class="chartjs"></canvas>
-        {% for comp in missionCible.competences %}
-            {{dump(comp)}}
-            "{{comp.title}} : {{comp.def}}",
-        {% endfor %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table table-hover">
+                <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="table_id">
+                        <thead>
+                            <tr>
+                                <th>Compétences</th>
+                                <th>Définition</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for comp in missionCible.competences %}
+                            <tr>
+                                <th>{{comp.title}}</th>
+                                <td>{{comp.def}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel-body">
+                <canvas id="missionCibleCanvas" class="chartjs"></canvas>
+            </div>
+        </div>
     </div>
     <br>
     {{ include('etoile/_form.html.twig') }}
@@ -69,7 +89,7 @@ var data = {
         labels:
         [
         {% for comp in missionCible.competences %}
-            "{{comp.title}} : {{comp.def}}",
+            "{{comp.title}}",
         {% endfor %}
         ],
 

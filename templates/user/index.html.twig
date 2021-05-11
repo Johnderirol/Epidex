@@ -315,7 +315,7 @@ var data = {
         labels:[
             {% set compArray = [] %}   
             {% for etoile in etoiles %}
-            {% for rating in ratingEtoiles %}
+            {% for rating in etoile.ratingEtoiles %}
             {% if rating.competences.title not in compArray %}
                 "{{rating.competences.title}}",
                 {% set compArray = compArray|merge([rating.competences.title]) %}
