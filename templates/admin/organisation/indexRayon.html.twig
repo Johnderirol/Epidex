@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EffectifController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    
+    
+    <h1>Liste des Rayons :</h1>
+    
+    <br>
+    
+    <h5><a href="{{path('new_rayon')}}">Nouveau Rayon</a></h5>
+    
+    <br>
+
+    <div class="adv-table">
+      <table class="table table-hover" id="hidden-table-info">
+        <thead>
+          <tr class="active">
+            <th class="th-sm">Titre</th>
+            <th class="th-sm">Numéro</th>
+            <th class="th-sm">Actions</th>   
+          </tr>
+        </thead>
+        <tbody>
+        {% for rayons in rayon %}
+         <tr class="gradeX">
+            <td><strong>{{rayons.title}}</strong></td>
+            <td>{{rayons.numero}}</td>
+            <td>
+                <a href="{{ path('edit_rayon', {'slug': rayons.slug}) }}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
+            </td>
+        </tr>
+         
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
+

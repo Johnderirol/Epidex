@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EffectifController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    
+    
+    <h1>Liste des Secteurs :</h1>
+    
+    <br>
+    
+    <h5><a href="{{path('new_secteur')}}">Nouveau Secteur</a></h5>
+    
+    <br>
+
+    <div class="adv-table">
+      <table class="table table-hover" id="hidden-table-info">
+        <thead>
+          <tr class="active">
+            <th class="th-sm">Titre</th>
+            <th class="th-sm">Responsable</th> 
+            <th class="th-sm">Rayons</th>   
+            <th class="th-sm">Actions</th>   
+          </tr>
+        </thead>
+        <tbody>
+        {% for secteurs in secteur %}
+         <tr class="gradeX">
+            <td><strong>{{secteurs.title}}</strong></td>
+            <td>{{secteurs.responsable.fullName}}</td>
+            <td>
+                {% for rayon in secteurs.rayons %}
+                <table>
+                  <tbody>
+                    <tr>
+                        <td>{{rayon.title}} ({{rayon.numero}}) </td>
+                    </tr>
+                  </tbody>
+                </table>
+                {% endfor %}
+            </td>
+            <td>
+                <a href="{{ path('detail_secteur', {'slug': secteurs.slug}) }}" class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
+                <a href="{{ path('edit_secteur', {'slug': secteurs.slug}) }}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
+                <a href="{{ path('delete_secteur', {'id': secteurs.id}) }}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>         
+            </td>
+        </tr>
+         
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
+

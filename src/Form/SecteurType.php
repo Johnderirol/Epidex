@@ -30,15 +30,7 @@ class SecteurType extends ApplicationType
                     ->andWhere('c.statut = :val')
                     ->setParameter('val', "Cadre")
                     ->orderBy('c.nom', 'ASC');
-                }])
-            ->add('rayons', CollectionType::class, 
-              [
-                  'entry_type' => RayonType::class,
-                  'allow_add' => true,
-                  'allow_delete' => true,
-                  'by_reference' => false
-              ]
-        );
+                }]);
     }
 
 

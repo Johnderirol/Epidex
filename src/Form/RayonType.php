@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Rayon;
 use App\Entity\Secteur;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,6 +27,10 @@ class RayonType extends AbstractType
                 'attr' => [
                     'placeholder'=> "Numéro du Rayon"
                 ]
+            ])
+            ->add('secteur', EntityType::class, [
+                'class' => Secteur::class,
+                'choice_label' => 'title'
             ])
         ; 
     }

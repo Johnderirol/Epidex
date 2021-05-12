@@ -9,6 +9,7 @@ use App\Form\SecteurType;
 use App\Repository\ColorRepository;
 use App\Repository\RayonRepository;
 use App\Repository\SecteurRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,32 +24,63 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class OrganisationController extends AbstractController
 {
+
+    /**
+     * @Route("/rayon/nouveau", name="new_rayon")
+     * @Route("/rayon/{slug}/edit", name="edit_rayon") 
+     */
+    public function createRayon (Rayon $rayon=null, Request $request, EntityManagerInterface $manager, ColorRepository $repoColor)
+    {
+        if(!$rayon){
+            $rayon = new Rayon();
+        }
+
+        //Gestiond es couleurs rayons
+        $rayonColor = $rayon->getColor();
+        if(empty($rayonColor)){
+            $randColor = rand(0,239);
+            $color = $repoColor->findOneById($randColor);
+        } else {$color = $rayonColor;}
+        
+
+        $form = $this->createForm(RayonType::class, $rayon);
+        
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $rayon->setColor($color);  
+            $manager->persist($rayon);
+            $manager->flush(); 
+            
+            $this->addFlash(
+                'success',
+                "Le rayon a été ajouté  !!!"
+            );
+
+            return $this->redirectToRoute('organisation');
+        }
+        
+        return $this->render('admin/organisation/nouveaurayon.html.twig',[
+            'form' => $form->createView(),
+            'editMode'=> $rayon->getSlug() !== null
+        ]);
+    }
             
     /**
      * @Route("/secteur/nouveau", name="new_secteur")
      * @Route("/{slug}/edit", name="edit_secteur") 
      */
-    public function createSecteur (Secteur $secteur=null, Request $request, EntityManagerInterface $manager, ColorRepository $repoColor)
+    public function createSecteur (Secteur $secteur=null, Request $request, EntityManagerInterface $manager)
     {
         if(!$secteur){
             $secteur = new Secteur();
         }
 
         $form = $this->createForm(SecteurType::class, $secteur);
-        
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid()){ 
-            foreach ($secteur->getRayons() as $rayon){
-                $rayon->SetSecteur($secteur);
-                $rayonColor = $rayon->getColor();
-                if(empty($rayonColor)){
-                    $randColor = rand(0,239);
-                    $color = $repoColor->findOneById($randColor);
-                } else {$color = $rayonColor;}
-                $rayon->setColor($color);
-                $manager->persist($rayon);
-            }
+            $manager = $this->getDoctrine()->getManager();
             $manager->persist($secteur);
             $manager->flush();
             
@@ -86,15 +118,44 @@ class OrganisationController extends AbstractController
     /**
      * @Route("/", name="organisation")
      */
-    public function index(SecteurRepository $repo) 
+    public function index(SecteurRepository $repo, RayonRepository $repoRay) 
     {
         
-        $secteur = $repo->findAll();       
+        $secteur = $repo->findAll();    
+        $rayon = $repoRay->findAll();   
         
         return $this->render('admin/organisation/index.html.twig',[
             'controller_name' => 'EffectifController',
-            'secteur'=>$secteur
+            'secteur'=>$secteur,
+            'rayon'=>$rayon
         ]);
+    }
+
+    /**
+     * @Route("/secteur", name="indexSecteur")
+     */
+    public function indexSecteur(SecteurRepository $repo) 
+    {
+        
+        $secteur = $repo->findAll();    
+        
+        return $this->render('admin/organisation/indexSecteur.html.twig',[
+            'controller_name' => 'EffectifController',
+            'secteur'=>$secteur        ]);
+    }
+
+    /**
+     * @Route("/rayon", name="indexRayon")
+     */
+    public function indexRayon(RayonRepository $repo) 
+    {
+        
+        $rayon = $repo->findAll();    
+        
+        return $this->render('admin/organisation/indexRayon.html.twig',[
+            'controller_name' => 'EffectifController',
+            'rayon'=>$rayon       
+            ]);
     }
 
     /**

@@ -111,7 +111,7 @@ class EtoileController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid()){        
             $manager->persist($collaborateur);
-            $manager->flush();
+            $manager->flush(); 
             
             $this->addFlash(
                 'success',
