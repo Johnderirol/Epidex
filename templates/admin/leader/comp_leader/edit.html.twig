@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CompLeader{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Edit CompLeader</h1>
+
+    {{ include('admin/leader/comp_leader/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('comp_leader_index') }}">back to list</a>
+
+    {{ include('admin/leader/comp_leader/_delete_form.html.twig') }}
+</div>
+{% endblock %}

@@ -74,11 +74,6 @@ class EtoileController extends AbstractController
         $note = $ratRepo->findByCollaborateur($collaborateur);
         $comps = $compRepo->findAll();
 
-        dump($missionCible);
-        dump($collaborateur);
-        dump($comps);
-        dump($note);
-
         return $this->render('admin/etoile/compare.html.twig', [
             'collaborateurs' => $collaborateur, 
             'missions' => $missionCible,

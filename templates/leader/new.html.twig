@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Leader{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<div class="form-horizontal">
+  <fieldset>
+        <div class="container">
+            <br>
+            <h1>Evaluation Etoile du Leader : <strong>{{collaborateur.fullName}}</strong></h1>
+            <br>
+            
+            {{ form_start(form) }}
+            
+            {{ form_widget(form) }}
+
+            <button type="submit" class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+
+            {{ form_end(form) }}
+
+
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin_leader') }}">Retour</a>
+            {% elseif is_granted('ROLE_MANAGER') %}
+            <a href="{{ path('manager_eval') }}">Retour</a>
+            {% else %}
+            <a href="{{ path('account_index') }}">Retour</a>
+            {% endif %}
+
+        </div>
+  </fieldset>
+</div>
+
+{% endblock %}
+{% block _leader_ratingLeaders_widget %}
+    
+    {{ form_widget(form)}}
+    
+    <input type="hidden" id="widgets-counter" value="0">
+     
+    
+{%  endblock %}
+ 
+
+{% block _leader_ratingLeaders_entry_row %}
+     {{ form_widget(form)}}
+{% endblock %}  
+
+
+{% block _leader_ratingLeaders_entry_widget %}
+    <div class="form-group" id="block_{{id}}">
+        <div class="row">
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-6">
+                        {{ form_widget(form.pole)}}
+                    </div>
+                    <div class="col-xs-5">
+                        {{ form_widget(form.note)}}
+                    </div>
+                    <div class="col-xs-1" alt="Photo">
+                    <i class="fas fa fa-comment-dots fa-2x" title=""></i> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}

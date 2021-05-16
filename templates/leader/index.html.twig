@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Leader index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Administration des Etoiles du Leader</h1>
+    <div class="row">
+    {% if is_granted('ROLE_ADMIN') %}
+    {% else %}
+    {% endif %}
+    
+    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+    <h5><a href="{{path('admin_collab')}}">Nouvelle Evaluation</a></h5>
+    {% elseif is_granted('ROLE_MANAGER') %}
+    <h5><a href="{{path('manager_collab')}}">Nouvelle Evaluation</a></h5>
+    {% else %}
+    {% endif %}
+    
+    <table class="table">
+        <thead>
+            <tr class="active">
+                <th>Collaborateur</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if is_granted('ROLE_ADMIN') %}
+                {% for leader in leaders %}
+                    <tr>
+                        <td><a href="{{ path('user_show',{'id':leader.collaborateur.id})}}">{{ leader.collaborateur.fullName }}</a></td>
+                        <td>{{ leader.createdAt ? leader.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('leader_show',{'id': leader.id, 'slug': leader.collaborateur.slug})}}"class="btn btn-success btn-xs" title="Voir"><i class="fas fa-eye"></i></a>
+                            <a href="{{ path('leader_edit',{'id': leader.id, 'slug': leader.collaborateur.slug})}}" class="btn btn-primary btn-xs" title="Modifier"><i class="fas fa-edit"></i></a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('admin_leader_delete',{'id': leader.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                            {% elseif is_granted('ROLE_MANAGER') %}
+                            <a href="{{ path('manager_leader_delete',{'id': leader.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                            {% else %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">no records found</td>
+                    </tr>
+                {% endfor %}
+        {% else %}
+        {% endif %}
+        
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

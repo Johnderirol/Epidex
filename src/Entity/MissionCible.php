@@ -43,6 +43,11 @@ class MissionCible
     private $competences;
 
     /**
+     * @ORM\OneToMany(targetEntity=Leader::class, mappedBy="missionCible")
+     */
+    private $leaders;
+
+    /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
@@ -57,6 +62,7 @@ class MissionCible
     {
         $this->collaborateurs = new ArrayCollection();
         $this->competences = new ArrayCollection();
+        $this->leaders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,6 +146,36 @@ class MissionCible
     {
         if ($this->competences->contains($competence)) {
             $this->competences->removeElement($competence);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Leader[]
+     */
+    public function getLeaders(): Collection
+    {
+        return $this->leaders;
+    }
+
+    public function addLeader(Leader $leader): self
+    {
+        if (!$this->leaders->contains($leader)) {
+            $this->leaders[] = $leader;
+            $leader->setMissionCible($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLeader(Leader $leader): self
+    {
+        if ($this->leaders->removeElement($leader)) {
+            // set the owning side to null (unless already changed)
+            if ($leader->getMissionCible() === $this) {
+                $leader->setMissionCible(null);
+            }
         }
 
         return $this;

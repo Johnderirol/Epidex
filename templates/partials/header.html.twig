@@ -30,7 +30,10 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{path('admin_etoile')}}">Etoile des Compétences</a>
-        </li>
+          </li>
+          <li class="nav-item">
+            <a class="nav-linl" href="{{path('admin_leader')}}">Leadership</a>
+          </li>
         {% elseif is_granted('ROLE_MANAGER') %}
         <li class="nav-item active">
             <a class="nav-link" href="{{path('manager_dashboard')}}">Accueil</a>

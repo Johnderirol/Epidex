@@ -151,6 +151,21 @@ class Collaborateur implements UserInterface
      */
     private $ratingEtoiles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Leader::class, mappedBy="auteur")
+     */
+    private $auteurLeader;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Leader::class, mappedBy="collaborateur")
+     */
+    private $leaders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RatingLeader::class, mappedBy="collaborateur")
+     */
+    private $ratingLeaders;
+
     public function getFullName(){
         return "{$this->prenom} {$this->nom}";
     }
@@ -177,6 +192,9 @@ class Collaborateur implements UserInterface
         $this->pDIs = new ArrayCollection();
         $this->etoiles = new ArrayCollection();
         $this->ratingEtoiles = new ArrayCollection();
+        $this->auteurLeader = new ArrayCollection();
+        $this->leaders = new ArrayCollection();
+        $this->ratingLeaders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -633,6 +651,96 @@ class Collaborateur implements UserInterface
             // set the owning side to null (unless already changed)
             if ($ratingEtoile->getCollaborateur() === $this) {
                 $ratingEtoile->setCollaborateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Leader[]
+     */
+    public function getAuteurLeader(): Collection
+    {
+        return $this->auteurLeader;
+    }
+
+    public function addAuteurLeader(Leader $auteurLeader): self
+    {
+        if (!$this->auteurLeader->contains($auteurLeader)) {
+            $this->auteurLeader[] = $auteurLeader;
+            $auteurLeader->setAuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAuteurLeader(Leader $auteurLeader): self
+    {
+        if ($this->auteurLeader->removeElement($auteurLeader)) {
+            // set the owning side to null (unless already changed)
+            if ($auteurLeader->getAuteur() === $this) {
+                $auteurLeader->setAuteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Leader[]
+     */
+    public function getLeaders(): Collection
+    {
+        return $this->leaders;
+    }
+
+    public function addLeader(Leader $leader): self
+    {
+        if (!$this->leaders->contains($leader)) {
+            $this->leaders[] = $leader;
+            $leader->setCollaborateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLeader(Leader $leader): self
+    {
+        if ($this->leaders->removeElement($leader)) {
+            // set the owning side to null (unless already changed)
+            if ($leader->getCollaborateur() === $this) {
+                $leader->setCollaborateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RatingLeader[]
+     */
+    public function getRatingLeaders(): Collection
+    {
+        return $this->ratingLeaders;
+    }
+
+    public function addRatingLeader(RatingLeader $ratingLeader): self
+    {
+        if (!$this->ratingLeaders->contains($ratingLeader)) {
+            $this->ratingLeaders[] = $ratingLeader;
+            $ratingLeader->setCollaborateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRatingLeader(RatingLeader $ratingLeader): self
+    {
+        if ($this->ratingLeaders->removeElement($ratingLeader)) {
+            // set the owning side to null (unless already changed)
+            if ($ratingLeader->getCollaborateur() === $this) {
+                $ratingLeader->setCollaborateur(null);
             }
         }
 

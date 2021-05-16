@@ -51,6 +51,11 @@ class CompEtoile
      */
     private $def;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RatingLeader::class, mappedBy="pole")
+     */
+    private $ratingLeaders;
+
 
     /**
      * @ORM\PrePersist
@@ -67,6 +72,7 @@ class CompEtoile
     {
         $this->missionCibles = new ArrayCollection();
         $this->comp = new ArrayCollection();
+        $this->ratingLeaders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,4 +186,6 @@ class CompEtoile
 
         return $this;
     }
+
+    
 }

@@ -2,23 +2,25 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use App\Form\RayonType;
 use App\Form\MissionType;
 use App\Entity\Collaborateur;
 use App\Entity\PasswordUpdate;
-use App\Entity\Rating;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
 use App\Repository\PDIRepository;
 use App\Repository\ColorRepository;
 use App\Repository\EtoileRepository;
+use App\Repository\LeaderRepository;
+use App\Repository\RatingRepository;
 use Symfony\Component\Form\FormError;
 use App\Repository\CategorieRepository;
 use Doctrine\Persistence\ObjectManager;
+use App\Repository\CompLeaderRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\CollaborateurRepository;
 use App\Repository\RatingEtoileRepository;
-use App\Repository\RatingRepository;
+use App\Repository\CollaborateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -171,7 +173,7 @@ class AccountController extends AbstractController
      * 
      * @return Response
      */
-    public function myAccount(PDIRepository $repoPDI, CategorieRepository $repoCat, EtoileRepository $repoEtoile, RatingRepository $repoRat, RatingEtoileRepository $repoRatetoile)
+    public function myAccount(PDIRepository $repoPDI, CategorieRepository $repoCat, EtoileRepository $repoEtoile, RatingRepository $repoRat, RatingEtoileRepository $repoRatetoile, LeaderRepository $repoLead, CompLeaderRepository $repoComp)
     {
         $user = $this->getUser();
         $pdis = $repoPDI->findByCollaborateur($user);
@@ -179,6 +181,8 @@ class AccountController extends AbstractController
         $etoile = $repoEtoile->findByCollaborateur($user);
         $ratings = $repoRat->findAll();
         $ratingEtoiles = $repoRatetoile->findAll();
+        $leader = $repoLead->findByCollaborateur($user);
+        $compLead = $repoComp->findAll();
 
         return $this->render('user/index.html.twig', [
             'user' => $user,
@@ -187,6 +191,8 @@ class AccountController extends AbstractController
             'etoiles' => $etoile,
             'ratings'=>$ratings,
             'ratingEtoiles'=>$ratingEtoiles,
+            'leaders' => $leader,
+            'comp' => $compLead,
         ]);
     }
 

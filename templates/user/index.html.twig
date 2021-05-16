@@ -55,6 +55,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Evolution Pro</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">Leader</a>
+        </li>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
@@ -224,6 +227,30 @@
                     </div>
                 </div>
             </div>
+            <!-- Tab Leader -->
+            <div class="tab-pane" id="tabs-4" role="tabpanel">
+                <div class="row">
+                {% for leader in leaders %}
+                    <div class="col-md-6">
+                        <div class="panel panel-default"> 
+                            <div class="panel-heading">
+                                <p>Etoile du Leader</p>
+                                <p>Date : {{ leader.createdAt ? leader.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                                <p>Auteur : {{ leader.auteur.fullName }}</p>
+                            </div>    
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body text-center mt-3">
+                            <canvas id="leader" class="chartjs" width="404" height="202" style="display: block; width: 404px; height: 202px;"></canvas>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <br>
@@ -341,6 +368,57 @@ var data = {
             pointBorderColor:"#fff",
             pointHoverBackgroundColor:"#fff",
             pointHoverBorderColor:"{{etoile.auteur.color.name}}",  
+        },
+        {% endfor %}
+        ]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+</script>
+<script>
+var ctx = document.getElementById('leader').getContext('2d');
+
+var data = {
+        labels:[
+            {% for pole in comp %}
+                "{{pole.pole}}",
+            {% endfor %}
+            ],
+
+        datasets:[
+        {% for leader in leaders %}    
+            {
+            label:"{{leader.auteur.fullName}}",
+            data:
+            [
+            {% for rating in leader.ratingLeaders %}
+                "{{rating.note}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{leader.auteur.color.code}}, 0.2)",
+            borderColor:"{{leader.auteur.color.name}}",
+            pointBackgroundColor:"{{leader.auteur.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{leader.auteur.color.name}}",  
         },
         {% endfor %}
         ]};

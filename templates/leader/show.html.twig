@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Leader{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Etoile du Leader de {{leader.collaborateur.fullName}}</h1>
+
+    <p>Date : {{ leader.createdAt ? leader.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+    <p>Evaluateur : {{ leader.auteur.fullName }}
+
+ <div class="panel panel-default">
+        <div class="panel-body text-center mt-3">
+            <canvas id="{{leader.id}}" class="chartjs" width="404" height="202" style="display: block; width: 404px; height: 202px;"></canvas>
+        </div>
+        <br>
+    </div>
+
+    
+
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{path('admin_eval')}}">Retour</a>
+        {% elseif is_granted('ROLE_MANAGER') %}
+        <a href="{{ path('manager_eval') }}">Retour</a>
+        {% else %}
+        {% endif %}
+
+    <a href="">edit</a>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+var ctx = document.getElementById('{{leader.id}}').getContext('2d');
+
+var data = {
+        labels:[
+            {% for pole in comp %}
+                "{{pole.pole}}",
+            {% endfor %}
+            ],
+
+        datasets:[{
+            label:"{{leader.collaborateur.fullName}}",
+            data:
+            [
+            {% for rating in leader.ratingLeaders %}
+                "{{rating.note}}",
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{leader.auteur.color.code}}, 0.2)",
+            borderColor:"{{leader.auteur.color.name}}",
+            pointBackgroundColor:"{{leader.auteur.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{leader.auteur.color.name}}",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+</script>
+{%  endblock %}

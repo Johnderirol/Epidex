@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CompLeader index{% endblock %}
+
+{% block body %}
+    <h1>CompLeader index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Pole</th>
+                <th>Definition</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comp_leader in comp_leaders %}
+            <tr>
+                <td>{{ comp_leader.id }}</td>
+                <td>{{ comp_leader.pole }}</td>
+                <td>{{ comp_leader.definition }}</td>
+                <td>
+                    <a href="{{ path('comp_leader_show', {'id': comp_leader.id}) }}">show</a>
+                    <a href="{{ path('comp_leader_edit', {'id': comp_leader.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('comp_leader_new') }}">Create new</a>
+{% endblock %}

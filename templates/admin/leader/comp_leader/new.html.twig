@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CompLeader{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Create new CompLeader</h1>
+
+    {{ include('admin/leader/comp_leader/_form.html.twig') }}
+
+    <a href="{{ path('comp_leader_index') }}">back to list</a>
+</div>
+{% endblock %}
