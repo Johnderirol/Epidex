@@ -7,7 +7,9 @@ use App\Form\LeaderType;
 use App\Entity\CompLeader;
 use App\Entity\RatingLeader;
 use App\Form\RatingLeaderType;
+use App\Repository\RayonRepository;
 use App\Repository\LeaderRepository;
+use App\Repository\SecteurRepository;
 use App\Repository\CompLeaderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CollaborateurRepository;
@@ -33,6 +35,32 @@ class LeaderController extends AbstractController
     }
 
     /**
+     * @Route("/manager/leader", name="manager_leader")
+     * @IsGranted("ROLE_MANAGER")
+     */
+    public function indexManager(LeaderRepository $leaderRepository, CollaborateurRepository $repo, SecteurRepository $repoSecteur, RayonRepository $repoRayon)
+    {
+        $user = $this->getUser()->getId();
+        $secteur = $repoSecteur->findByResponsable($user);
+        $rayon = $repoRayon->findBySecteur($secteur);
+
+        
+        $collaborateur = [];
+        foreach ($rayon as $rayonid) {
+            $collaborateur [] = $repo->findByRayon($rayonid);
+        }
+        
+        $leaders = [];
+        foreach ($collaborateur as $collaborateurs){
+            $leaders [] = $leaderRepository->findByCollaborateur($collaborateurs);
+        }
+
+        return $this->render('leader/index.html.twig', [
+            'leaders' => $leaders,
+        ]);
+    }
+
+    /**
      * @Route("/new/{id}", name="leader_new", methods={"GET","POST"})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER') ")
      */
@@ -48,8 +76,6 @@ class LeaderController extends AbstractController
 
         //On récupère les poles de l'étoile du leader
         $compLead = $repoComp->findAll();
-        dump($compLead);
-        dump($collaborateur);
 
         //On demande un array de compétences sélectionnées dans $compLeader
         foreach ($compLead as $compId) {
@@ -78,7 +104,15 @@ class LeaderController extends AbstractController
                 'success',
                 "L'évaluation est prise en compte !!!");
 
-            return $this->redirectToRoute('leader_index');
+                if ($user[0] == 'ROLE_ADMIN') {
+                    return $this->redirectToRoute('admin_leader');
+                }
+                elseif ($user[0] == 'ROLE_MANAGER') {
+                    return $this->redirectToRoute('manager_leader');
+                }
+                else {
+                    return $this->redirectToRoute('account_index');
+                }
         }
 
         return $this->render('leader/new.html.twig', [

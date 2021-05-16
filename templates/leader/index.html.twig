@@ -7,14 +7,9 @@
     <h1>Administration des Etoiles du Leader</h1>
     <div class="row">
     {% if is_granted('ROLE_ADMIN') %}
-    {% else %}
-    {% endif %}
-    
-    </div>
-    {% if is_granted('ROLE_ADMIN') %}
-    <h5><a href="{{path('admin_collab')}}">Nouvelle Evaluation</a></h5>
+    {{ include('admin/service/padelleader.html.twig') }}
     {% elseif is_granted('ROLE_MANAGER') %}
-    <h5><a href="{{path('manager_collab')}}">Nouvelle Evaluation</a></h5>
+    {{ include('manager/service/padelleader.html.twig')}}
     {% else %}
     {% endif %}
     
@@ -38,7 +33,7 @@
                             {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ path('admin_leader_delete',{'id': leader.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
                             {% elseif is_granted('ROLE_MANAGER') %}
-                            <a href="{{ path('manager_leader_delete',{'id': leader.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
+                            <a href="{{ path('leader_delete',{'id': leader.id})}}" class="btn btn-danger btn-xs" title="Supprimer"><i class="fas fa-trash"></i></a>
                             {% else %}
                             {% endif %}
                         </td>

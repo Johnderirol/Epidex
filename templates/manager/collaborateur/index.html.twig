@@ -15,7 +15,6 @@
                 <th>Rayon</th>
                 <th>Mission</th>
                 <th>Evaluations</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -40,6 +39,7 @@
                     <a href="{{ path('evaluation_new',{'id':c.id})}}" class="btn btn-info btn-xs" title="Compétences"><i class="fas fa-sliders-h"></i></a>
                     <a href="{{ path('manager_pdi_new',{'id':c.id})}}" class="btn btn-default btn-xs" title="PDI"><i class="fas fa-project-diagram"></i></a>
                     <a href="{{ path('etoile_mission',{'id':c.id})}}" class="btn btn-warning btn-xs" title="Etoile des Compétences"><i class="fas fa-star"></i></a>
+                    <a href="{{ path('leader_new',{'id':c.id})}}" class="btn btn-link btn-xs" title="Etoile du Leader"><i class="fas fa-star"></i></a>
                 </th>
             </tr>
             {% endfor %}

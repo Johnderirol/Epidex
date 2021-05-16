@@ -139,10 +139,10 @@ class EvaluationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            if ($user[0] = 'ROLE_ADMIN') {
+            if ($user[0] == 'ROLE_ADMIN') {
                 return $this->redirectToRoute('admin_eval');
             }
-            elseif ($user[0] = 'ROLE_MANAGER') {
+            elseif ($user[0] == 'ROLE_MANAGER') {
                 return $this->redirectToRoute('manager_eval');
             }
             else {

@@ -61,7 +61,7 @@
                         {{ form_widget(form.note)}}
                     </div>
                     <div class="col-xs-1" alt="Photo">
-                    <i class="fas fa fa-comment-dots fa-2x" title=""></i> 
+                    <i class="fas fa fa-comment-dots fa-2x" title="{% for data in form.pole.vars.choices %} {% if form.pole.vars.value == data.value %} {{data.data.definition}} {% endif %}{% endfor %}"></i> 
                     </div>
                 </div>
             </div>

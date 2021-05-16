@@ -13,17 +13,33 @@
             <div class="col-md-9">
                 <h1>{{user.fullName}}</h1>
                     <div class="mt-3">
-                        <a href="{{path('edit_register_collab',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Modifier le profil</a>
-                        <a href="{{path('account_password')}}" class="btn btn-success mb-2 btn-sm"> Modifier le mot de passe</a>
-                        <a href="{{path('evaluation_new',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Auto-Evaluation Compétences</a>
-                        {% if user.missionCible.title is defined %}
-                        <a href="{{path('etoile_new',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Auto-Evaluation Evolution</a>
-                        {% else %}
-                        {% endif %}
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{path('userpass_edit',{ 'id':user.id})}}" class="btn btn-success mr-2 mb-2 btn-sm"> Réinitialiser Mot de Passe</a>
-                        {% else %}
-                        {% endif %}
+                    <p class="bs-component">
+                        <div class="btn-group">
+                            <a class="btn btn-success mr-2 mb-2 btn-sm">Auto-Evaluations</a>
+                            <a class="btn btn-success dropdown-toggle mr-2 mb-2 btn-sm" data-toggle="dropdown" aria-expanded="true"><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{path('evaluation_new',{ 'id':user.id})}}"> Cartographie des Compétences</a></li>
+                                <li><a href="{{path('leader_new',{ 'id':user.id})}}"> Leader</a></li>
+                                <li class="divider"></li>
+                                <li> {% if user.missionCible.title is defined %}
+                                    <a href="{{path('etoile_new',{ 'id':user.id})}}"> Evolution</a>
+                                    {% else %}
+                                    {% endif %}</li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-success mr-2 mb-2 btn-sm">Mes Paramètres</a>
+                            <a class="btn btn-success dropdown-toggle mr-2 mb-2 btn-sm" data-toggle="dropdown" aria-expanded="true"><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{path('edit_register_collab',{ 'id':user.id})}}"> Modifier le profil</a></li>
+                                <li><a href="{{path('account_password')}}"> Modifier le mot de passe</a></li>
+                                <li>{% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{path('userpass_edit',{ 'id':user.id})}}"> Réinitialiser Mot de Passe</a>
+                                {% else %}
+                                {% endif %}</li>
+                            </ul>
+                        </div>
+                    </p>
                     </div>         
                 <hr> 
                 <h4>Rayon : 

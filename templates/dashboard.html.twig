@@ -14,9 +14,11 @@
         {% if is_granted('ROLE_ADMIN') %}
         {{ include('admin/service/padelevalcomp.html.twig') }}
         {{ include('admin/service/padeletoile.html.twig') }}
+        {{ include('admin/service/padelleader.html.twig') }}
         {% elseif is_granted('ROLE_MANAGER') %}
         {{ include('manager/service/padelevalcomp.html.twig') }}
         {{ include('manager/service/padeletoile.html.twig') }}
+        {{ include('manager/service/padelleader.html.twig') }}
         {% else %}
         {% endif %}
 
