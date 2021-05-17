@@ -138,8 +138,7 @@
                             <div class="col-md-8">
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                        <tr class="success">
-                                            <th>Date de création</th>
+                                        <tr class="info">
                                             <th>Situation Apprenante</th>
                                             <th>Progrès Espérés</th>
                                             <th>Contributeurs et leur Roles</th>
@@ -149,7 +148,6 @@
                                 <tbody>
                                 {% for pdi in user.pdis %}
                                 <tr>
-                                    <td>{{ pdi.createdAt ? pdi.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                                     <td>{{ pdi.situationApprenante }}</td>
                                     <td>{{ pdi.progres }}</td>
                                     <td>{{ pdi.contributeursRoles }}</td>
