@@ -23,16 +23,16 @@
             <a class="nav-link" href="{{path('organisation')}}">Organisation</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('admin_eval')}}">Evaluation</a>
+            <a class="nav-link" href="{{path('admin_eval')}}">Cartographie</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{path('admin_pdi')}}">PDI</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('admin_etoile')}}">Etoile des Compétences</a>
+            <a class="nav-link" href="{{path('admin_etoile')}}">Etoile du Développement</a>
           </li>
           <li class="nav-item">
-            <a class="nav-linl" href="{{path('admin_leader')}}">Leadership</a>
+            <a class="nav-linl" href="{{path('admin_leader')}}">Etoile du Leader</a>
           </li>
         {% elseif is_granted('ROLE_MANAGER') %}
         <li class="nav-item active">
@@ -42,16 +42,16 @@
             <a class="nav-link" href="{{path('manager_collab')}}">Effectif</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('manager_eval')}}">Evaluation</a>
+            <a class="nav-link" href="{{path('manager_eval')}}">Cartographie</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('manager_etoile')}}">Etoile des Compétences</a>
+            <a class="nav-link" href="{{path('manager_etoile')}}">Etoile du Développement</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{path('manager_pdi')}}">PDI</a>
           </li>
           <li class="nav-item">
-            <a class="nav-linl" href="{{path('manager_leader')}}">Leadership</a>
+            <a class="nav-linl" href="{{path('manager_leader')}}">Etoile du Leader</a>
           </li>
         {% else %}
         <li class="nav-item active">

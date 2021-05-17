@@ -19,10 +19,10 @@
                             <a class="btn btn-success dropdown-toggle mr-2 mb-2 btn-sm" data-toggle="dropdown" aria-expanded="true"><span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{path('evaluation_new',{ 'id':user.id})}}"> Cartographie des Compétences</a></li>
-                                <li><a href="{{path('leader_new',{ 'id':user.id})}}"> Leader</a></li>
+                                <li><a href="{{path('leader_new',{ 'id':user.id})}}"> Etoile du Leader</a></li>
                                 <li class="divider"></li>
                                 <li> {% if user.missionCible.title is defined %}
-                                    <a href="{{path('etoile_new',{ 'id':user.id})}}"> Evolution</a>
+                                    <a href="{{path('etoile_new',{ 'id':user.id})}}"> Etoile du Développement</a>
                                     {% else %}
                                     {% endif %}</li>
                             </ul>
@@ -63,16 +63,16 @@
     <div class="container">
         <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Compétences</a>
+            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Cartographie des Compétences</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">PDI</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Evolution Pro</a>
+            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Etoile du Développement</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">Leader</a>
+            <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">Etoile du Leader</a>
         </li>
         </ul>
         <!-- Tab panes -->
