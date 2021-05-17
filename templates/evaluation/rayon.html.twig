@@ -70,12 +70,16 @@ var data = {
             "{{collaborateur.fullName}}",
             data:
             [
+            {% for skill in skills %}
             {% for rating in ratings %}
                 {% if rating.competences.category.slug == cat.slug %}
                 {% if rating.collaborateur == collaborateur %}
-                "{{rating.note}}",
+                {% if rating.competences.title == skill.competence.title %}
+                "{{rating.note}}", 
                 {% endif %}
                 {% endif %}
+                {% endif %}
+            {% endfor %}
             {% endfor %}
             ],
             fill:true,

@@ -26,13 +26,13 @@
             <a class="nav-link" href="{{path('admin_eval')}}">Cartographie</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('admin_pdi')}}">PDI</a>
+            <a class="nav-linl" href="{{path('admin_leader')}}">Leader</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{path('admin_etoile')}}">Développement</a>
           </li>
           <li class="nav-item">
-            <a class="nav-linl" href="{{path('admin_leader')}}">Leader</a>
+            <a class="nav-link" href="{{path('admin_pdi')}}">PDI</a>
           </li>
         {% elseif is_granted('ROLE_MANAGER') %}
         <li class="nav-item active">
@@ -45,14 +45,15 @@
             <a class="nav-link" href="{{path('manager_eval')}}">Cartographie</a>
           </li>
           <li class="nav-item">
+            <a class="nav-linl" href="{{path('manager_leader')}}">Leader</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{{path('manager_etoile')}}">Développement</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{path('manager_pdi')}}">PDI</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-linl" href="{{path('manager_leader')}}">Leader</a>
-          </li>
+
         {% else %}
         <li class="nav-item active">
           <a class="nav-link" href="{{path('account_index')}}">Accueil</a>
