@@ -72,13 +72,17 @@ var data = {
             [
             {% for skill in skills %}
             {% for rating in ratings %}
+            {% for rayon in rayons %}
                 {% if rating.competences.category.slug == cat.slug %}
                 {% if rating.collaborateur == collaborateur %}
+                {% if rayon.secteur.responsable.id ==  rating.evaluation.auteur.id%}
                 {% if rating.competences.title == skill.competence.title %}
                 "{{rating.note}}", 
                 {% endif %}
                 {% endif %}
                 {% endif %}
+                {% endif %}
+            {% endfor %}
             {% endfor %}
             {% endfor %}
             ],
