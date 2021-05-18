@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1> Cartographie Magasin</h1>
+    <h5>
+    <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">Cartographie Magasin</div>
+            <div class="panel-body">
+             {% for cat in categories %}
+                <h4><center><span class="label label-success"> Compétences {{cat.title}}</span></center></h4>
+                <div class="panel-body">
+                    <canvas id="{{cat.slug}}" class="chartjs"></canvas>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+</div>
+{% endblock body %}
+{% block javascripts %}
+{% for cat in categories %}
+<script>
+
+var ctx = document.getElementById('{{cat.slug}}').getContext('2d');
+
+var data = {
+        labels:
+        [
+        {% for skill in skills %}
+            {% if skill.competence.category.slug == cat.slug %}
+            "{{skill.competence.title}}",
+            {% endif %}
+        {% endfor %}
+        ],
+
+        datasets:[{
+            label:"{{cat.title}}",
+            data:
+            [
+            {% for skill in skills %}
+                {% if skill.competence.category.slug == cat.slug %}
+                "{{skill.avgNotes}}",
+                {% endif %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba(255, 99, 132, 0.2)",
+            borderColor:"rgb(255, 99, 132)",
+            pointBackgroundColor:"rgb(255, 99, 132)",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"rgb(255, 99, 132)",
+            
+        }]};
+
+var options = {
+    scale: {
+    angleLines: {
+        display: true
+    },
+    ticks: {
+        suggestedMin: 0,
+        suggestedMax: 4
+    }
+}
+};
+
+var config =  {
+            type:'radar',
+            data: data, 
+            options : options
+        }
+        var graph = new Chart (ctx, config)
+
+
+</script>
+{% endfor %}
+{%  endblock %}

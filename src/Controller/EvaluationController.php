@@ -96,7 +96,6 @@ class EvaluationController extends AbstractController
             else {
                 return $this->redirectToRoute('account_index');
             }
-        
             
         }
 
@@ -105,6 +104,22 @@ class EvaluationController extends AbstractController
             'collaborateur' => $collaborateur,
             'comps'=>$comp,
             'form' => $form->createView(),
+        ]);
+    }
+    
+    /**
+     * Permet de retrouver les évaluations du magasin
+     * @Route("/cartographie_magasin", name="carto_mag")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')")
+     */
+    public function showMagasin( SkillRepository $skillRepo, CategorieRepository $catRepo, RatingRepository $ratRepo) 
+    {
+        $skills = $skillRepo->findAvgNotesMagasin();
+        $cat = $catRepo->findAll();
+
+        return $this->render('evaluation/magasin.html.twig', [
+            'categories'=>$cat,
+            'skills'=> $skills,
         ]);
     }
 

@@ -70,14 +70,18 @@ var data = {
             "{{rayon.title}}",
             data:
             [
+            {% for secteur in skillSecteur %}
             {% for skill in skillRayon %}
                 {% for s in skill %}
                     {% if s.competence.category.slug == cat.slug %}
+                    {% if s.competence.slug == secteur.competence.slug %}
                     {% if s.title == rayon.title %}
                        "{{s.avgNotes}}",  
-                    {% endif %}       
+                    {% endif %}     
+                    {% endif %}   
                     {% endif %}          
                 {% endfor %}
+            {% endfor %}
             {% endfor %}
             ],
             fill:true,

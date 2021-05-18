@@ -30,6 +30,21 @@ class SkillRepository extends ServiceEntityRepository
                     ->getArrayResult();
     }
 
+    public function findAvgNotesMagasin()
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, AVG(r.note) as avgNotes, c as category')
+                    ->join('s.ratings','r')
+                    ->join('s.category','c')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('y.secteur','t')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->groupBy('competence')
+                    ->getQuery()
+                    ->getArrayResult();
+    }
+
     public function findAvgNotesByRayon($id)
     {
         return $this->createQueryBuilder('s')

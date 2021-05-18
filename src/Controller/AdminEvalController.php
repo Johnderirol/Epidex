@@ -60,7 +60,6 @@ class AdminEvalController extends AbstractController
         ]);
     }
 
-
     /**
      * Permet de retrouver les évaluations d'un rayon
      * @Route("/admin/evaluations/rayon/{id}", name="admin_eval_rayon")
@@ -103,6 +102,9 @@ class AdminEvalController extends AbstractController
         foreach ($rayons as $rayonid) {
             $skillRayon[] = $skillRepo->findAvgNotesByRayon($rayonid);
         }
+
+        dump($skillSecteur);
+        dump($skillRayon);
 
         return $this->render('evaluation/secteur.html.twig', [
             'collaborateurs' => $collaborateurs, 
