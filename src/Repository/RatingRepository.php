@@ -19,18 +19,24 @@ class RatingRepository extends ServiceEntityRepository
         parent::__construct($registry, Rating::class);
     }
 
-    public function findBySecteur($id)
+    public function findNotesByRayon($id)
     {
         return $this->createQueryBuilder('r')
-                    ->select('r as ratings, s as secteur')
-                    ->join('r.rayon', 's')
-                    ->andWhere('s.secteur = :val')
+                    ->select('r as ratings, s as competence')
+                    ->join('r.competences','s')
+                    ->join('r.collaborateur','c')
+                    ->join('s.category','g')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('y.secteur','t')
+                    ->andWhere('y.id = :val')
+                    ->andWhere('t.responsable = e.auteur')
                     ->setParameter('val', $id)
+                    ->groupBy('competence')
                     ->getQuery()
-                    ->getResult()
-                    ;
+                    ->getResult();
     }
-
+    
     // /**
     //  * @return Rating[] Returns an array of Rating objects
     //  */

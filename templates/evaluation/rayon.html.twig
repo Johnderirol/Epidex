@@ -71,8 +71,8 @@ var data = {
             data:
             [
             {% for skill in skills %}
-            {% for rayon in rayons %}
             {% for rating in ratings %}
+            {% for rayon in rayons %}
                 {% if rating.competences.category.slug == cat.slug %}
                 {% if rating.collaborateur == collaborateur %}
                 {% if rayon.secteur.responsable.id ==  rating.evaluation.auteur.id%}

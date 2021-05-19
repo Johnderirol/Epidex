@@ -45,6 +45,40 @@ class SkillRepository extends ServiceEntityRepository
                     ->getArrayResult();
     }
 
+    public function findNotesByRayon($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, r as note, c as category, y.title')
+                    ->join('s.category','c')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('y.secteur','t')
+                    ->andWhere('y.id = :val')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->groupBy('competence')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function findNotesByCollab($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, r.note as note, c.slug, k.id')
+                    ->join('s.category','c')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('r.collaborateur','k')
+                    ->join('y.secteur','t')
+                    ->andWhere('k.id = :val')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->getQuery()
+                    ->getResult();
+    }
+
     public function findAvgNotesByRayon($id)
     {
         return $this->createQueryBuilder('s')

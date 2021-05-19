@@ -24,19 +24,22 @@ class EvaluationRepository extends ServiceEntityRepository
     // /**
     //  * @return Evaluation[] Returns an array of Evaluation objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByCollabRayon($value)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->select('e as evaluation')
+            ->join('e.collaborateur','c')
+            ->join('c.rayon','y')
+            ->join('y.secteur','t')
+            ->andWhere('y.id = :val')
+            ->andWhere('t.responsable = e.auteur')
             ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+        
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Evaluation

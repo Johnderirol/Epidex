@@ -103,9 +103,6 @@ class AdminEvalController extends AbstractController
             $skillRayon[] = $skillRepo->findAvgNotesByRayon($rayonid);
         }
 
-        dump($skillSecteur);
-        dump($skillRayon);
-
         return $this->render('evaluation/secteur.html.twig', [
             'collaborateurs' => $collaborateurs, 
             'categories'=>$cat,
