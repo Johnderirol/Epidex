@@ -79,15 +79,11 @@ class AdminEvalController extends AbstractController
         foreach ($collaborateurs as $collabid) {
             $skillColab[] = $skillRepo->findNotesByCollab($collabid);
         }   
-        dump($skillColab);
         //on nomme les clés de skills avec SkillId
         $skills = array_column($skills, null, 'skillId');
 
         //après avoir compté le nombre de collab, nous fusionnons les collab avec les compétences
         $countCol = count($skillColab);
-        $countCol2 = count($collaborateurs);
-        dump($countCol);
-        dump($countCol2);
         $out = [];
         for ($i = 0; $i <= $countCol; $i++)  {
             if(empty($skillColab[$i])){
@@ -109,7 +105,6 @@ class AdminEvalController extends AbstractController
         for ($i = 0; $i <= $countNum; $i++) {
             $out = array_combine($num, $out);
         }
-        dump($out);
         return $this->render('evaluation/rayon.html.twig', [
             'collaborateurs' => $collaborateurs, 
             'rayons'=>$rayon,
