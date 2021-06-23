@@ -13,7 +13,8 @@
     </a>
     {% endfor %}
     </h3>
-    {% endfor %}  
+    {% endfor %} 
+
     <br>
         <div class="panel panel-default">
             <div class="panel-heading">Cartographie détaillée du secteur</div>
@@ -51,7 +52,7 @@ var data = {
             [
             {% for skill in skillSecteur %}
                 {% if skill.competence.category.slug == cat.slug %}
-                "{{skill.avgNotes}}",
+                "{{skill.note}}",
                 {% endif %}
             {% endfor %}
             ],
@@ -70,18 +71,20 @@ var data = {
             "{{rayon.title}}",
             data:
             [
-            {% for secteur in skillSecteur %}
-            {% for skill in skillRayon %}
-                {% for s in skill %}
-                    {% if s.competence.category.slug == cat.slug %}
-                    {% if s.competence.slug == secteur.competence.slug %}
-                    {% if s.title == rayon.title %}
-                       "{{s.avgNotes}}",  
-                    {% endif %}     
-                    {% endif %}   
-                    {% endif %}          
+            {% for key, ray in compSecteur %}
+            {% if key == rayon.id %}
+                {% for comp in ray %}
+                    {% if comp.competence.category.slug == cat.slug %}
+                            {% if comp.note is defined %}
+                                {% if comp.proprioID == key %}
+                                        "{{comp.note}}",
+                                {% endif %}
+                            {% else %}
+                            NaN,
+                            {% endif %}
+                    {% endif %}
                 {% endfor %}
-            {% endfor %}
+            {% endif %}
             {% endfor %}
             ],
             fill:true,
@@ -97,6 +100,7 @@ var data = {
         ]};
 
 var options = {
+    spanGaps: true,
     scale: {
     angleLines: {
         display: true

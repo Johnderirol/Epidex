@@ -65,7 +65,7 @@ class SkillRepository extends ServiceEntityRepository
     public function findNotesByCollab($id)
     {
         return $this->createQueryBuilder('s')
-                    ->select('s as competence, r.note as note, c.slug, k.id')
+                    ->select('s as competence, s.title as skillTitle, s.id as skillId, k.nom as proprio, r.note as note, c.slug as category, k.id as proprioID')
                     ->join('s.category','c')
                     ->join('s.ratings','r')
                     ->join('r.evaluation','e')
@@ -82,7 +82,7 @@ class SkillRepository extends ServiceEntityRepository
     public function findAvgNotesByRayon($id)
     {
         return $this->createQueryBuilder('s')
-                    ->select('s as competence, AVG(r.note) as avgNotes, c as category, y.title')
+                    ->select('s as competence, s.title as skillTitle, s.id as skillId, y.title as proprio, AVG(r.note) as note, c.slug as category, y.id as proprioID')
                     ->join('s.category','c')
                     ->join('s.ratings','r')
                     ->join('r.evaluation','e')
@@ -99,13 +99,45 @@ class SkillRepository extends ServiceEntityRepository
     public function findAvgNotesBySecteur($id)
     {
         return $this->createQueryBuilder('s')
-                    ->select('s as competence, AVG(r.note) as avgNotes, c as category')
+                    ->select('s as competence, s.title as skillTitle, s.id as skillId, t.title as proprio, AVG(r.note) as note, c.slug as category, t.id as proprioID')
                     ->join('s.category','c')
                     ->join('s.ratings','r')
                     ->join('r.evaluation','e')
                     ->join('r.rayon','y')
                     ->join('y.secteur','t')
                     ->andWhere('y.secteur = :val')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->groupBy('competence')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function findSkillIdBySecteur($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, s.id as skillId, t.title as secteur')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('y.secteur','t')
+                    ->andWhere('y.secteur = :val')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->groupBy('competence')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function findSkillIdByRayon($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, s.id as skillId, t.title as secteur')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('y.secteur','t')
+                    ->andWhere('r.rayon = :val')
                     ->andWhere('t.responsable = e.auteur')
                     ->setParameter('val', $id)
                     ->groupBy('competence')
@@ -123,6 +155,22 @@ class SkillRepository extends ServiceEntityRepository
                     ->getResult();
     }
     
+    public function findKillsBySecteur($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s.id as Skills')
+                    ->join('s.category','c')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('y.secteur','t')
+                    ->andWhere('y.secteur = :val')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->groupBy('Skills')
+                    ->getQuery()
+                    ->getResult();
+    }
 
     // /**
     //  * @return Skill[] Returns an array of Skill objects

@@ -51,7 +51,7 @@ var data = {
             [
             {% for skill in skills %}
                 {% if skill.competence.category.slug == cat.slug %}
-                "{{skill.avgNotes}}",
+                "{{skill.note}}",
                 {% endif %}
             {% endfor %}
             ],
@@ -70,20 +70,20 @@ var data = {
             "{{collaborateur.fullName}}",
             data:
             [
-            {% for skill in skills %}
-            {% for rating in ratings %}
-            {% for rayon in rayons %}
-                {% if rating.competences.category.slug == cat.slug %}
-                {% if rating.collaborateur == collaborateur %}
-                {% if rayon.secteur.responsable.id ==  rating.evaluation.auteur.id%}
-                {% if rating.competences.title == skill.competence.title %}
-                "{{rating.note}}", 
-                {% endif %}
-                {% endif %}
-                {% endif %}
-                {% endif %}
-            {% endfor %}
-            {% endfor %}
+            {% for key, ray in ratings %}
+            {% if key == collaborateur.id %}
+                {% for comp in ray %}
+                    {% if comp.competence.category.slug == cat.slug %}
+                            {% if comp.note is defined %}
+                                {% if comp.proprioID == key %}
+                                        "{{comp.note}}",
+                                {% endif %}
+                            {% else %}
+                            NaN,
+                            {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             {% endfor %}
             ],
             fill:true,

@@ -22,10 +22,8 @@ class RatingRepository extends ServiceEntityRepository
     public function findNotesByRayon($id)
     {
         return $this->createQueryBuilder('r')
-                    ->select('r as ratings, s as competence')
+                    ->select('AVG(r.note) as note, s as competence, s.id as SkillId,')
                     ->join('r.competences','s')
-                    ->join('r.collaborateur','c')
-                    ->join('s.category','g')
                     ->join('r.evaluation','e')
                     ->join('r.rayon','y')
                     ->join('y.secteur','t')
@@ -36,7 +34,34 @@ class RatingRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getResult();
     }
+
+    public function findNotesBySecteur($id)
+    {
+        return $this->createQueryBuilder('r')
+                    ->select(' r.note as note, s.id as competence, y.id as rayon')
+                    ->join('r.competences','s')
+                    ->join('r.evaluation','e')
+                    ->join('r.rayon','y')
+                    ->join('y.secteur','t')
+                    ->andWhere('t.id = :val')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->getQuery()
+                    ->getResult();
+    }
     
+    public function findNotesBySkills($id)
+    {
+        return $this->createQueryBuilder('r')
+                    ->select('r.note as note, s.id as skills')
+                    ->join('r.competences','s')
+                    ->andWhere('s.id = :val')
+                    ->setParameter('val', $id)
+                    ->groupBy('skills')
+                    ->getQuery()
+                    ->getResult();
+    }
+
     // /**
     //  * @return Rating[] Returns an array of Rating objects
     //  */
