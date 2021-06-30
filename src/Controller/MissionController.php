@@ -101,7 +101,7 @@ class MissionController extends AbstractController
         for ($i = 0; $i <= $countNum; $i++) {
             $out = array_combine($num, $out);
         }
-        dump($out);
+   
         return $this->render('admin/competences/mission/show.html.twig',[
             'collaborateurs' => $collaborateurs, 
             'categories'=>$cat,
