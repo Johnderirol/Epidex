@@ -13,7 +13,7 @@
     {% else %}
     {% endif %}
     
-    <table class="table">
+    <table class="table" id="eval_table">
         <thead>
             <tr class="active">
                 <th>Collaborateur</th>
@@ -73,4 +73,11 @@
     </table>
 
 </div>
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#eval_table').DataTable();
+} );
+</script>
 {% endblock %}
