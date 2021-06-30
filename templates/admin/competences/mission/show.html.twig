@@ -58,29 +58,41 @@
     </div>
     <div class="row">
       <div class="panel panel-default">
-        <canvas id="evalMission" class="chartjs" width="404" height="202" style="display: block; width: 404px; height: 202px;"></canvas>
+      {% for cat in categories %}
+        <h4><center><span class="label label-success"> Compétences {{cat.title}}</span></center></h4>
+            <div class="panel-body">
+              <canvas id="{{cat.slug}}.evalMission" class="chartjs" width="404" height="202" style="display: block; width: 404px; height: 202px;"></canvas>
+            </div>
+      {% endfor %}
       </div>
     </div>
 </div>
 {% endblock %}
-
 {% block javascripts %}
+{% for cat in categories %}
 <script>
-var ctx = document.getElementById('evalMission').getContext('2d');
+
+var ctx = document.getElementById('{{cat.slug}}.evalMission').getContext('2d');
 
 var data = {
-        labels:[
-            {% for rating in evalMission %}
-                "{{rating.title}}",
-            {% endfor %}
-            ],
+        labels:
+        [
+        {% for skill in skills %}
+            {% if skill.competence.category.slug == cat.slug %}
+            "{{skill.competence.title}}",
+            {% endif %}
+        {% endfor %}
+        ],
 
-        datasets:[{
-            label:"{{mission.title}}",
+        datasets:
+        [{
+            label:"MOYENNE - {{cat.title}}",
             data:
             [
-            {% for rating in evalMission %}
-                "{{rating.note}}",
+            {% for skill in skills %}
+                {% if skill.competence.category.slug == cat.slug %}
+                "{{skill.note}}",
+                {% endif %}
             {% endfor %}
             ],
             fill:true,
@@ -91,15 +103,51 @@ var data = {
             pointHoverBackgroundColor:"#fff",
             pointHoverBorderColor:"rgb(255, 99, 132)",
             
-        }]};
+        },
+        {% for collaborateur in mission.collaborateur %}
+        {
+            label:
+            
+            "{{collaborateur.fullName}}",
+
+            data:
+            [
+            {% for key, ray in ratings %}
+            {% if key == collaborateur.id %}
+                {% for comp in ray %}
+                    {% if comp.competence.category.slug == cat.slug %}
+                            {% if comp.note is defined %}
+                                {% if comp.proprioID == key %}
+                                        "{{comp.note}}",
+                                {% endif %}
+                            {% else %}
+                            NaN,
+                            {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endfor %}
+            ],
+            fill:true,
+            backgroundColor:"rgba({{collaborateur.color.code}}, 0.2)",
+            borderColor:"{{collaborateur.color.name}}",
+            pointBackgroundColor:"{{collaborateur.color.name}}",
+            pointBorderColor:"#fff",
+            pointHoverBackgroundColor:"#fff",
+            pointHoverBorderColor:"{{collaborateur.color.name}}",
+            
+        },
+        {% endfor %}
+        ]};
 
 var options = {
+    spanGaps: true,
     scale: {
     angleLines: {
         display: true
     },
     ticks: {
-        suggestedMin: 1,
+        suggestedMin: 0,
         suggestedMax: 4
     }
 }
@@ -114,5 +162,7 @@ var config =  {
 
 
 </script>
+{% endfor %}
 {% endblock %}
+
 

@@ -40,6 +40,30 @@ class CollaborateurRepository extends ServiceEntityRepository
                     ->getResult();
     }
 
+    public function findStatutByRayon($id)
+    {
+        return $this->createQueryBuilder('c')
+                    ->select('c.statut as statut')
+                    ->join('c.rayon','r')
+                    ->andWhere('c.rayon = :val')
+                    ->setParameter('val', $id)
+                    ->groupBy('statut')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function findByMission($id)
+    {
+        return $this->createQueryBuilder('c')
+                    ->select('c as collaborateur, c.id as id')
+                    ->join('c.mission','m')
+                    ->andWhere('m.id = :val')
+                    ->setParameter('val', $id)
+                    ->groupBy('collaborateur')
+                    ->getQuery()
+                    ->getResult();
+    }
+
     // /**
     //  * @return Collaborateur[] Returns an array of Collaborateur objects
     //  */

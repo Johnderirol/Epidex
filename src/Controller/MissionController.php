@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Mission;
 use App\Form\MissionType;
+use App\Repository\CategorieRepository;
+use App\Repository\CollaborateurRepository;
 use App\Repository\MissionRepository;
+use App\Repository\SkillRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,22 +58,56 @@ class MissionController extends AbstractController
     /**
      * @Route("/{id}", name="mission_show", methods={"GET"})
      */
-    public function showMission($id, Mission $mission, EntityManagerInterface $manager) 
+    public function showMission($id, Mission $mission, CollaborateurRepository $repoCollab, SkillRepository $skillRepo, CategorieRepository $catRepo, EntityManagerInterface $manager) 
     {
-        $query = $manager->createQuery(
-            "SELECT AVG(r.note) as note, s.title
-            FROM App\Entity\Collaborateur c
-            JOIN c.evaluations e
-            JOIN c.mission m
-            JOIN e.ratings r
-            JOIN r.competences s
-            WHERE m.id =$id
-            GROUP BY s.title");
-        $evalMission= $query->getResult();
+        $collaborateurs = $repoCollab->findByMission($id);
+        $cat = $catRepo->findAll();
+        $skills = $skillRepo->findSkillIdByMission($id);
+        $evalMission = $skillRepo->findAvgNotesByMission($id);
+        
+        //on récupère les données de chaque collab dans un seul tableau
+        $IdColab = [];
+        foreach ($collaborateurs as $collabid) {
+            $IdColab[] = $collabid['id'];
+        }   
+        $skillColab = [];
+        foreach ($IdColab as $collabid) {
+            $skillColab[] = $skillRepo->findNotesByCollab($collabid);
+        }   
+        
+        //on nomme les clés de skills avec SkillId
+        $skills = array_column($skills, null, 'skillId');
 
+        //après avoir compté le nombre de collab, nous fusionnons les collab avec les compétences
+        $countCol = count($skillColab);
+        $out = [];
+        for ($i = 0; $i <= $countCol; $i++)  {
+            if(empty($skillColab[$i])){
+            } else {
+            $out[$i] = array_column($skillColab[$i], null, 'skillId');
+            $out[$i] = array_replace($skills, $out[$i]);
+            }
+        }
+        
+        //on renome les clés du tableau final avec les identifiants des collaborateurs
+        $num = [];
+        foreach($skillColab as $sk) {
+            foreach ($sk as $key => $value) {
+                $num[] = $value['proprioID'];
+            }
+        }
+        $num = array_unique($num);
+        $countNum = count($num);
+        for ($i = 0; $i <= $countNum; $i++) {
+            $out = array_combine($num, $out);
+        }
+        dump($out);
         return $this->render('admin/competences/mission/show.html.twig',[
+            'collaborateurs' => $collaborateurs, 
+            'categories'=>$cat,
             'mission'=>$mission,
-            'evalMission'=>$evalMission
+            'skills'=>$evalMission,
+            'ratings'=>$out,
         ]);
     }
 

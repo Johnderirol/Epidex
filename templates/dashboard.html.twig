@@ -47,6 +47,16 @@
                         {% endfor %}
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    Choisir une Mission <span class="caret"></span>
+                    </a>
+                        <ul class="dropdown-menu">
+                        {% for mission in missions %}
+                        <li><a href="{{ path('mission_show',{'id':mission.id})}}">{{mission.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

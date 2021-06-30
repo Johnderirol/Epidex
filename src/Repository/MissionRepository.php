@@ -19,6 +19,7 @@ class MissionRepository extends ServiceEntityRepository
         parent::__construct($registry, Mission::class);
     }
     
+    
     // /**
     //  * @return Mission[] Returns an array of Mission objects
     //  */

@@ -14,6 +14,7 @@
     {% endfor %}
     </h5>
     {% endfor %}
+
     <br>
         <div class="panel panel-default">
             <div class="panel-heading">Cartographie détaillée du rayon</div>
@@ -67,7 +68,9 @@ var data = {
         {% for collaborateur in collaborateurs %}
         {
             label:
+            
             "{{collaborateur.fullName}}",
+
             data:
             [
             {% for key, ray in ratings %}

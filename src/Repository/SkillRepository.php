@@ -79,6 +79,20 @@ class SkillRepository extends ServiceEntityRepository
                     ->getResult();
     }
 
+    public function findNotesByMissionCollab($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, s.title as skillTitle, s.id as skillId, k.nom as proprio, r.note as note, c.slug as category, k.id as proprioID')
+                    ->join('s.category','c')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('r.collaborateur','k')
+                    ->andWhere('k.id = :val')
+                    ->setParameter('val', $id)
+                    ->getQuery()
+                    ->getResult();
+    }
+
     public function findAvgNotesByRayon($id)
     {
         return $this->createQueryBuilder('s')
@@ -113,6 +127,25 @@ class SkillRepository extends ServiceEntityRepository
                     ->getResult();
     }
 
+    public function findAvgNotesByMission($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, s.title as skillTitle, s.id as skillId, AVG(r.note) as note, c.slug as category')
+                    ->join('s.category','c')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('e.collaborateur', 'k')
+                    ->join('k.rayon','y')
+                    ->join('k.mission','m')
+                    ->join('y.secteur','t')
+                    ->andWhere('m.id = :val')
+                    ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->groupBy('competence')
+                    ->getQuery()
+                    ->getResult();
+    }
+
     public function findSkillIdBySecteur($id)
     {
         return $this->createQueryBuilder('s')
@@ -139,6 +172,21 @@ class SkillRepository extends ServiceEntityRepository
                     ->join('y.secteur','t')
                     ->andWhere('r.rayon = :val')
                     ->andWhere('t.responsable = e.auteur')
+                    ->setParameter('val', $id)
+                    ->groupBy('competence')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function findSkillIdByMission($id)
+    {
+        return $this->createQueryBuilder('s')
+                    ->select('s as competence, s.id as skillId')
+                    ->join('s.ratings','r')
+                    ->join('r.evaluation','e')
+                    ->join('e.collaborateur','k')
+                    ->join('k.mission','m')
+                    ->andWhere('m.id = :val')
                     ->setParameter('val', $id)
                     ->groupBy('competence')
                     ->getQuery()

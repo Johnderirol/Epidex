@@ -10,6 +10,7 @@ use App\Repository\SecteurRepository;
 use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\MissionCibleRepository;
+use App\Repository\MissionRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -31,7 +32,7 @@ class HomeController extends AbstractController{
     * @Route("admin/dashboard", name="dashboard")
     * @IsGranted("ROLE_ADMIN")
     */
-    public function dashboard(SkillRepository $skillRepo, MissionCibleRepository $missionRepo , CategorieRepository $catRepo, RayonRepository $rayonRepo, SecteurRepository $secteurRepo )
+    public function dashboard(SkillRepository $skillRepo, MissionRepository $missionRepo , CategorieRepository $catRepo, RayonRepository $rayonRepo, SecteurRepository $secteurRepo )
     {
 
         $collaborateur = $this->getUser();
@@ -39,7 +40,7 @@ class HomeController extends AbstractController{
         $cat = $catRepo->findAll();
         $rayon = $rayonRepo->findAll();
         $secteur = $secteurRepo->findAll();
-        $mission = $missionRepo->findAll();
+        $missions = $missionRepo->findAll();
 
         return $this->render('dashboard.html.twig',[
             'collaborateur'=>$collaborateur,
@@ -47,7 +48,7 @@ class HomeController extends AbstractController{
             'skills'=> $skills,
             'rayons'=>$rayon,
             'secteurs'=>$secteur,
-            'missions'=>$mission,
+            'missions'=>$missions,
         ]
         );
 
